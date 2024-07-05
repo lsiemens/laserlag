@@ -8,12 +8,12 @@ The top down perspective means we can treat the world as a 2 + 1 dimensional
 spacetime (this perspective will involve some faking).
 
 This project is broken into three main parts:
- - minkowski: A math library for relativistic 3-vectors
- - poincare: The 2D game engine based on a 2+1 spacetime
+ - [minkowski](minkowski/README.md): A math library for relativistic 3-vectors
+ - [poincare](poincare/README.md): The 2D game engine based on a 2+1 spacetime
  - laserlag: The top down shooter using the poincare engine
 
 # Theory
-Any documentation on the general theory behind this project should be
+Any [documentation](theory/README.md) on the general theory behind this project should be
 maintained in `theory/` while theory and discussion of specific implementation
 should be in the respective directories
 

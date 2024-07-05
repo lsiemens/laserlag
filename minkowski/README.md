@@ -1,6 +1,6 @@
 # Minkowski
 This is a library to impliment types for a 2+1 dimensional minkowski
-spacetime. They will have some compatibility with glm::vec3.
+spacetime. They will have some compatibility with `glm::vec3`.
 
 ## Types
 While it would be possible to simply use `glm::vec3` and `glm::mat3`
@@ -8,10 +8,10 @@ directly, I want to use the type system to distinguish spacetime points
 and 3-vectors which would otherwise both be repersented as `glm::vec3`
 since Lorentz transforms are linear. 
 
- - Point: a point in 2+1 minkowski space
- - Vector: a reletivistic 3 vector in minkowski space
- - Worldline : a sequence of points and vectors forming a timelike path
-   through the tangent manifold Mp x TpM
+ - `minkowski::Point`: a point in 2+1 minkowski space
+ - `minkowski::Vector`: a reletivistic 3 vector in minkowski space
+ - `minkowski::Worldline` : a sequence of points and vectors forming a
+   timelike path through the tangent manifold
 
 Note: the worldline does not have to include the tangent vectors, but
 the 3-velocity will not need to be recostructed, introducting extra error,
