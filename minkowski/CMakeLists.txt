@@ -22,5 +22,9 @@ target_link_libraries(test_point ${GTEST_LIBRARIES} pthread minkowski)
 add_executable(test_vector tests/test_vector.cpp)
 target_link_libraries(test_vector ${GTEST_LIBRARIES} pthread minkowski)
 
+add_executable(test_worldline tests/test_worldline.cpp)
+target_link_libraries(test_worldline ${GTEST_LIBRARIES} pthread minkowski)
+
 add_test(NAME test_point COMMAND test_point)
 add_test(NAME test_vector COMMAND test_vector)
+add_test(NAME test_worldline COMMAND test_worldline)
