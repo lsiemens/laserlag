@@ -1,13 +1,25 @@
-#include "point.hpp"
-
 #include <gtest/gtest.h>
+
+#include "point.hpp"
+#include "vector.hpp"
 
 namespace {
 
-TEST(PointTest, foo) {
-    minkowski::Point location;
+TEST(PointTest, point_difference) {
+    minkowski::Point origin = minkowski::Point(0, 1, 2);
+    minkowski::Point point = minkowski::Point(3, 2, 1);
 
-    EXPECT_EQ(location.foo(), 0);
+    EXPECT_EQ((point - origin), minkowski::Vector(3, 1, -1));
+    EXPECT_EQ((point - origin)*(point - origin), -7);
+}
+
+TEST(PointTest, point_vector_sum) {
+    minkowski::Point origin = minkowski::Point(0, 1, 2);
+    minkowski::Point point = minkowski::Point(3, 2, 1);
+    minkowski::Vector diffrence = minkowski::Vector(0.1, 0.2, 0.3);
+
+    EXPECT_EQ(origin + diffrence, minkowski::Point(0.1, 1.2, 2.3));
+    EXPECT_EQ(origin + (point - origin), point);
 }
 
 } // namespace

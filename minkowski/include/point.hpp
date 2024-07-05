@@ -1,13 +1,21 @@
 #ifndef POINT_HPP
 #define POINT_HPP
 
+//#include "vector.hpp"
+
 namespace minkowski {
+
+class Vector;
 
 class Point {
 public:
-    Point();
+    Point(double t, double x, double y);
 
-    int foo();
+    bool operator==(Point const& other) const;
+    Vector operator-(Point const& other) const;
+    Point operator+(Vector const& other) const;
+private:
+    double coordinates[3];
 };
 
 } // namespace minkowski
