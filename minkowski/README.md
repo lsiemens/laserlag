@@ -8,9 +8,9 @@ directly, I want to use the type system to distinguish spacetime points
 and 3-vectors which would otherwise both be repersented as `glm::vec3`
 since Lorentz transforms are linear. 
 
- - point : a point in 2+1 minkowski space
- - vector : a reletivistic 3 vector in minkowski space
- - worldline : a sequence of points and vectors forming a timelike path
+ - Point: a point in 2+1 minkowski space
+ - Vector: a reletivistic 3 vector in minkowski space
+ - Worldline : a sequence of points and vectors forming a timelike path
    through the tangent manifold Mp x TpM
 
 Note: the worldline does not have to include the tangent vectors, but
