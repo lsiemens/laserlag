@@ -1,7 +1,11 @@
 #ifndef FRAME_TIMER_H
 #define FRAME_TIMER_H
 
-#include "looplog.h"
+//#include "update_logger.hpp"
+
+namespace poincare {
+
+class UpdateLogger;
 
 /// An interface for timming the render loop. One of the implementations
 /// of `FrameTimer` should be used to calculate time steps in the render
@@ -15,22 +19,22 @@ public:
     /// Calculates the current time step and adds the frame rate to the
     /// `LoopLog` buffer.
     /// @return Time since the previous invocation of `timer()`.
-    virtual float timer() = 0;
+    virtual double Timer() = 0;
     /// @return The time since the GLFW window was created.
-    virtual float getTime() const = 0;
+    virtual double GetTime() const = 0;
 };
 
 /// This implementation of `FrameTimer` computes the times step and addes
 /// only the frame rate to the `LoopLog` buffer.
 class BasicTimer : public FrameTimer {
 private:
-    float time, previous_time, previous_update;
+    double time, previous_time, previous_update;
     unsigned int frame_count;
-    LoopLog* loopLog;
+    UpdateLogger* logger;
 public:
     BasicTimer();
-    float timer() override;
-    float getTime() const override;
+    double Timer() override;
+    double GetTime() const override;
 };
 
 /// This implementation of `FrameTimer` computes the times step and addes
@@ -38,20 +42,22 @@ public:
 /// `LoopLog` buffer.
 class AdvancedTimer : public FrameTimer {
 private:
-    float time, previous_time, previous_update;
-    float min_dt, max_dt, mean_dt, previous_mean_dt;
-    float current_M2, previous_M2;
+    double time, previous_time, previous_update;
+    double min_dt, max_dt, mean_dt, previous_mean_dt;
+    double current_M2, previous_M2;
 
     unsigned int frame_count;
-    LoopLog* loopLog;
+    UpdateLogger* logger;
 
     /// Reset parameters used to compute Welford's online algorithm
     /// for the variance.
-    void resetWelford();
+    void ResetWelford();
 public:
     AdvancedTimer();
-    float timer() override;
-    float getTime() const override;
+    double Timer() override;
+    double GetTime() const override;
 };
+
+} // namespace poincare
 
 #endif

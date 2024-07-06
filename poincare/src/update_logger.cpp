@@ -1,14 +1,16 @@
-#include "looplog.h"
+#include "update_logger.hpp"
 
 #include <iostream>
 
-LoopLog* LoopLog::instance = nullptr;
+namespace poincare {
 
-LoopLog::LoopLog() {
+UpdateLogger* UpdateLogger::instance = nullptr;
+
+UpdateLogger::UpdateLogger() {
 }
 
 /// Moves the cursor back to where it was prior to flushing the log.
-void LoopLog::resetCursor() {
+void UpdateLogger::ResetCursor() {
     std::string buffer = log.str();
     for (char &c : buffer) {
         if (c == '\n') {
@@ -17,20 +19,22 @@ void LoopLog::resetCursor() {
     }
 }
 
-LoopLog* LoopLog::getInstance() {
+UpdateLogger* UpdateLogger::GetInstance() {
     if (instance == nullptr) {
-        instance = new LoopLog();
+        instance = new UpdateLogger();
     }
     return instance;
 }
 
-void LoopLog::flush(){
+void UpdateLogger::Flush(){
     std::string buffer = log.str();
     if (buffer != "") {
         std::cout << buffer;
-        resetCursor();
+        ResetCursor();
         std::cout.flush();
     }
     log.str("");
     log.clear();
 }
+
+} // namespace poincare

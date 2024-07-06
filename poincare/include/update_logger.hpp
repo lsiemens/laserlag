@@ -1,36 +1,40 @@
-#ifndef LOOPLOG_H
-#define LOOPLOG_H
+#ifndef UPDATE_LOGGER_H
+#define UPDATE_LOGGER_H
 
 #include <sstream>
+
+namespace poincare {
 
 /// A class for convienient logging in a render loop.
 /// Text added to `instance.log` during the render loop will be printed
 /// to the standard output device when `instance.flush()` is called. The
 /// intention is that any functions called during the render loop can
 /// log info in a live update instead of a stream of text flowing by.
-/// LoopLog should only be flushed once per render iteration.
-class LoopLog {
+/// UpdateLogger should only be flushed once per render iteration.
+class UpdateLogger {
 private:
-    static LoopLog* instance;
+    static UpdateLogger* instance;
 
-    LoopLog();
+    UpdateLogger();
 
     /// Returns the cursor to where it was before the buffer was flushed
     /// to the standard output.
-    void resetCursor();
+    void ResetCursor();
 
-    LoopLog(const LoopLog&) = delete;
-    LoopLog& operator=(const LoopLog&) = delete;
+    UpdateLogger(const UpdateLogger&) = delete;
+    UpdateLogger& operator=(const UpdateLogger&) = delete;
 public:
     std::stringstream log;
 
     /// Gets and instance of the LoogLoop singleton.
     /// @return Pointer to an instance of LoogLoop.
-    static LoopLog* getInstance();
+    static UpdateLogger* GetInstance();
 
     /// Writes the log buffer to the standard output. This function should
     /// only be called once in the render loop.
-    void flush();
+    void Flush();
 };
+
+} // namespace poincare
 
 #endif
