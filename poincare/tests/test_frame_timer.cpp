@@ -37,7 +37,7 @@ int BasicTimerStringMatching(std::string input, std::string& output, double& fps
 
 TEST(FrameTimerTest, timming) {
     if (!glfwInit()) {
-        FAIL() << "GLFW Faild to initalize.";
+        FAIL() << "GLFW Faild to initialize.";
     }
     glfwSetTime(0);
 
@@ -64,7 +64,7 @@ TEST(FrameTimerTest, printing) {
     std::cout.rdbuf(buffer.rdbuf());
 
     if (!glfwInit()) {
-        FAIL() << "GLFW Faild to initalize.";
+        FAIL() << "GLFW Faild to initialize.";
     }
     glfwSetTime(0);
 

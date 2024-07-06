@@ -12,15 +12,15 @@ namespace poincare {
 Window::Window(int width, int height, std::string title, GLFWwindow* primary_window) : window(nullptr), primary_window(primary_window) {
     if (primary_window == nullptr) {
         if (!glfwInit()) {
-            throw std::runtime_error("Failed to initalize GLFW.");
+            throw std::runtime_error("Failed to initialize GLFW.");
         }
     }
 
-    InitalizeWindow(width, height, title);
+    InitializeWindow(width, height, title);
 
     if (primary_window == nullptr) {
         if (glewInit() != GLEW_OK) {
-            throw std::runtime_error("Failed to initalize GLEW.");
+            throw std::runtime_error("Failed to initialize GLEW.");
         }
     }
 
@@ -38,7 +38,7 @@ void Window::MakeCurrentContext() {
     glfwMakeContextCurrent(window);
 }
 
-void Window::InitalizeWindow(int width, int height, std::string title) {
+void Window::InitializeWindow(int width, int height, std::string title) {
     glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
 
     window = glfwCreateWindow(width, height, title.c_str(), nullptr, primary_window);

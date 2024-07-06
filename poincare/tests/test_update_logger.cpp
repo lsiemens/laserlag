@@ -7,7 +7,7 @@
 
 namespace {
 
-TEST(UpdateLoggerTest, initalize) {
+TEST(UpdateLoggerTest, initialize) {
     // move std::cout to a string stream
     std::stringstream buffer;
     std::streambuf* cout_buffer = std::cout.rdbuf();

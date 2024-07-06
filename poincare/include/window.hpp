@@ -17,7 +17,7 @@ public:
     void MakeCurrentContext();
 private:
     GLFWwindow* primary_window;
-    void InitalizeWindow(int with, int height, std::string title);
+    void InitializeWindow(int with, int height, std::string title);
 };
 
 } // namespace poincare
