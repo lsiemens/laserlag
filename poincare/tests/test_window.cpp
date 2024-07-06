@@ -7,7 +7,7 @@ namespace {
 
 TEST(WindowTest, initialize) {
     poincare::Window window(600, 600, "TEST");
-    EXPECT_NE(window.window, nullptr);
+    EXPECT_NE(window.glfw_window, nullptr);
 }
 
 } // namespace
