@@ -13,12 +13,14 @@ The ordinary types include,
 
  - `poincare::FrameTimer`: Time frames to estimate `dt` and report various levels
    of statistics to the console.
+ - `poincare::Window`: Setup and contain a GLFW window.
  - `poincare::Shader`: Contain and load OpenGL shader programs.
  - `poincare::Sprite`: Contain and load 2D sprite.
 
 The ordinary managers include,
 
  - `poincare::UpdateLogger`: Write text to the console that can be updated every frame.
+ - `poincare::WindowManager`: Contain active windows and manage refrences to them.
  - `poincare::ShaderManager`: Contain loaded shaders and manage refrences to them.
  - `poincare::SpriteManager`: Contain loaded sprites and manage refrences to them.
 

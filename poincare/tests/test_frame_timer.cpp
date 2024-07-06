@@ -41,7 +41,7 @@ TEST(FrameTimerTest, timming) {
     }
     glfwSetTime(0);
 
-    poincare::BasicTimer timer = poincare::BasicTimer();
+    poincare::BasicTimer timer;
 
     double t_0 = glfwGetTime();
     double dt = timer.Timer();
@@ -68,7 +68,7 @@ TEST(FrameTimerTest, printing) {
     }
     glfwSetTime(0);
 
-    poincare::BasicTimer timer = poincare::BasicTimer();
+    poincare::BasicTimer timer;
     poincare::UpdateLogger* logger = poincare::UpdateLogger::GetInstance();
 
     double t = glfwGetTime();

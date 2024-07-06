@@ -1,8 +1,6 @@
 #ifndef FRAME_TIMER_H
 #define FRAME_TIMER_H
 
-//#include "update_logger.hpp"
-
 namespace poincare {
 
 class UpdateLogger;
