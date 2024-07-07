@@ -5,13 +5,13 @@ namespace poincare {
 
 class UpdateLogger;
 
-/// An interface for timming the render loop. One of the implementations
+/// An interface for timing the render loop. One of the implementations
 /// of `FrameTimer` should be used to calculate time steps in the render
 /// loop as well as report the current frame rate and other statistics.
 /// In the render loop `timer()` should only be called once to get the
 /// to get the current timestep `dt`.
 class FrameTimer {
-// Call timer() once in the render loop preferably at the begining or end.
+// Call timer() once in the render loop preferably at the beginning or end.
 public:
     virtual ~FrameTimer() = default;
     /// Calculates the current time step and adds the frame rate to the
@@ -22,7 +22,7 @@ public:
     virtual double GetTime() const = 0;
 };
 
-/// This implementation of `FrameTimer` computes the times step and addes
+/// This implementation of `FrameTimer` computes the times step and adds
 /// only the frame rate to the `LoopLog` buffer.
 class BasicTimer : public FrameTimer {
 private:
@@ -35,7 +35,7 @@ public:
     double GetTime() const override;
 };
 
-/// This implementation of `FrameTimer` computes the times step and addes
+/// This implementation of `FrameTimer` computes the times step and adds
 /// the frame rate as well as some statistics about the time step to the
 /// `LoopLog` buffer.
 class AdvancedTimer : public FrameTimer {

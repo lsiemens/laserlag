@@ -32,7 +32,7 @@ TEST(UpdateLoggerTest, initialize) {
     logger->Flush();
     EXPECT_EQ(buffer.str(), "test\n\033[Atest2\n\033[Atest3\ntest4\n\033[A\033[A");
 
-    // return std::cout to its propper buffer
+    // return std::cout to its proper buffer
     std::cout.rdbuf(cout_buffer);
 }
 

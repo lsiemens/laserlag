@@ -7,3 +7,9 @@ target_link_libraries(window_example poincare glfw ${GLEW_LIBRARIES} ${OPENGL_LI
 
 add_executable(two_windows_example two_windows_example.cpp)
 target_link_libraries(two_windows_example poincare glfw ${GLEW_LIBRARIES} ${OPENGL_LIBRARIES})
+
+add_executable(sprite_example sprite_example.cpp)
+target_link_libraries(sprite_example poincare glfw ${GLEW_LIBRARIES} ${OPENGL_LIBRARIES})
+
+add_executable(two_windows_sprite_example two_windows_sprite_example.cpp)
+target_link_libraries(two_windows_sprite_example poincare glfw ${GLEW_LIBRARIES} ${OPENGL_LIBRARIES})

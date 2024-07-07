@@ -5,7 +5,7 @@
 
 namespace poincare {
 
-/// A class for convienient logging in a render loop.
+/// A class for convenient logging in a render loop.
 /// Text added to `instance.log` during the render loop will be printed
 /// to the standard output device when `instance.flush()` is called. The
 /// intention is that any functions called during the render loop can
@@ -26,7 +26,7 @@ private:
 public:
     std::stringstream log;
 
-    /// Gets and instance of the LoogLoop singleton.
+    /// Gets and instance of the UpdateLogger singleton.
     /// @return Pointer to an instance of LoogLoop.
     static UpdateLogger* GetInstance();
 

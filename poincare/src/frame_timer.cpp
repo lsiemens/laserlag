@@ -33,8 +33,8 @@ double BasicTimer::GetTime() const {
     return time;
 }
 
-/// Reset parameters needed for walford's online algorithm for the variance
-/// aswell as limits for finding the minimum and maximum time step.
+/// Reset parameters needed for Welford's online algorithm for the variance
+/// as well as limits for finding the minimum and maximum time step.
 void AdvancedTimer::ResetWelford() {
     min_dt = INFINITY, max_dt = -INFINITY, mean_dt = previous_mean_dt = 0;
     current_M2 = previous_M2 = 0;

@@ -52,6 +52,10 @@ GLuint Shader::CompileShader(std::string shader_path, GLenum shader_type){
 }
 
 void Shader::LoadShaderProgram() {
+    //TODO check for opengl context
+    std::cerr << "Error Shader does not check if there is a valid openGL context.\n";
+    std::cerr << "TODO Check with WindowManager if there is a valid context.\n";
+
     if (glfwGetCurrentContext() == NULL) {
         std::cerr << "Can not load shaders before initializing a OpenGL context.";
         throw std::runtime_error("No OpenGL context present.");
