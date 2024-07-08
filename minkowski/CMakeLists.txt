@@ -6,12 +6,12 @@ project(minkowski)
 
 set(CMAKE_CXX_STANDARD 11)
 
-include_directories(include)
-
 add_library(minkowski STATIC
     src/point.cpp
     src/vector.cpp
     src/worldline.cpp)
+target_include_directories(minkowski PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_compile_options(minkowski PRIVATE -Wall -Wextra -Wpedantic)
 
 # setup tests
 enable_testing()

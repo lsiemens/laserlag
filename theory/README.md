@@ -164,6 +164,63 @@ exist due to changes in linear and rotational motion. This system would
 render vector "sprites" with relativistic effects naturally included where
 motion is always rendered as if it is constant.
 
+# Scratch
+Notes for working out details before writting components.
+
+## Units and measurments
+In this project times will be measured in seconds and a unit distance will
+be one light second, then the speed of light is $c = 1$. For convienience
+I will offten drop the distinction and measure duration and distance in
+seconds and will usualy not explicitly note the units. The apparent speed
+of light will then be controlled by the scale of the view that is used.
+
+## Timing
+For all intents and purposes the clocks of the computer systems and all
+players are syncronized. At the same time the players all see their
+character from the characters restframe so in that frame they presieve
+their 3-velocity as $u^{\mu} = (1, 0, 0)^{\mu}$. So the proper time of
+each character is syncronized provided there are no issues with frame
+rate or lag.
+
+Given two players A and B. Let's assume that A is at rest relative to the
+system and B has a non-relativistic 2-velocity of v relative to A. Then
+B's 3-velocity is $U_{B}^{\mu} = \frac{1}{\sqrt{1 - v^2}}(1, \vec{v})$, from
+this perspective B will be getting ahead in time at a rate of
+$\sqrt{1}{\sqrt{1 - v^2}} - 1$, but symmetricaly from B's perspective
+A and the system are likewise traveling ahead in time at the same rate.
+
+Given for A it has velocity $u_{A}^{\mu} = (1, 0, 0)$ and starts out at
+the origin, its position over time is $x_{A}^{\mu} = (\tau, 0, 0)$, where
+$\tau$ is the proper time. For B it has the velocity $u_{B}^{\mu} = \gamma (1, \vec{v})$,
+where $\gamma$ is $\frac{1}{\sqrt{1 - v^2}}$ and an inital position of
+$x_0^{\mu}$, then B's position will be $x_{B}^{\mu} = x_0^{\mu} + \tau \gamma (1, \vec{v})$,
+note that the players controlling A and B have syncronized clocks so B
+must be parameterized by the same variable a A. The difference between
+these points in space is $x_0^{\mu} + \tau (\gamma (1, \vec{v}) - (1, \vec{0}))$.
+Contracting this with itself gives the distance $D$ squared,
+$D^2 = x_0^2 + 2\tau x_0^{\mu} (\gamma - 1, \gamma \vec{v})_{\mu} + \tau^2 (\gamma - 1, \gamma \vec{v})^2$.
+Evaluating the terms provided $x_0^{\mu} = (t_0, \vec{x}_0)$, the cross
+term is $2\tau (\vec{x_0} \cdot \vec{v} - t_0 (\gamma - 1))$. The diagonal terms are $x_0^2 - t_0^2$
+and $\tau^2 (\gamma^2 v^2 - (\gamma - 1)^2) = \tau^2 (\gamma^2 (v^2 - 1) - 1 + 2\gamma)$
+which is $2\tau^2 (\gamma - 1)$. The distance squared is then,
+$D^2 = x_0^2 - t_0^2 + 2\tau (\vec{x_0} \cdot \vec{v} - t_0 (\gamma - 1)) + 2\tau^2 (\gamma - 1)$.
+Solving for $D^2 = 0$, A and B is null seporated at some time in the past
+and in some time in the future given by $\tau$. The positive root of this
+quadratic equation gives the proper time as measured by both A and B when
+A and B are no longer seporated by a spacelike distance. At this point the
+relative motion of the particles must change or the system breaks.
+
+Looking at the simple case where $t_0 = 0$ and $\vec{x_0} \cdot \vec{v} = 0$,
+then this positive solution is $\tau = \frac{|x_0|}{\sqrt(2\gamma - 2)}$.
+This is an aphysical constraint that is required since the proper time
+of A and B is syncronized. In actual relativistic mechanics the "rate" of
+proper time is a non entity, the proper time expresses the behavior of
+time in that frame so any "change" in it is can not be measured from within
+the system. In this simulation it would be possible, for a limited amout
+of time, to model relativity and its effects. If the motions of A and B
+are approptiatly managed it may be possible to extend $\tau$ indefinitly
+but constant non-zero relative motion will not be possible.
+
 # Issues
 ## Lag
 As stated, these relativistic effects are essentially a builtin lag, so

@@ -5,6 +5,7 @@
 #include <stdexcept>
 
 namespace poincare {
+
 Sprite::Sprite(std::string vector_sprite_path) : vertex_buffer_id(0), element_buffer_id(0), vector_sprite_path(vector_sprite_path) {
     LoadSprite();
 }
