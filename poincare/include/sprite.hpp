@@ -1,5 +1,5 @@
-#ifndef SPRITE_H
-#define SPRITE_H
+#ifndef SPRITE_HPP
+#define SPRITE_HPP
 
 #include <string>
 #include <vector>
@@ -37,7 +37,6 @@ namespace poincare {
 /// one line for each triangle specified in the header. the values in each
 /// line are three ints, the indices of the vertices in the vertex data,
 /// which make up the triangle.
-
 class Sprite {
 public:
     GLuint vertex_buffer_id;

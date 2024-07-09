@@ -1,5 +1,5 @@
-#ifndef FRAME_TIMER_H
-#define FRAME_TIMER_H
+#ifndef FRAME_TIMER_HPP
+#define FRAME_TIMER_HPP
 
 namespace poincare {
 
@@ -25,20 +25,24 @@ public:
 /// This implementation of `FrameTimer` computes the times step and adds
 /// only the frame rate to the `LoopLog` buffer.
 class BasicTimer : public FrameTimer {
-private:
-    double time, previous_time, previous_update;
-    unsigned int frame_count;
-    UpdateLogger* logger;
 public:
     BasicTimer();
     double Timer() override;
     double GetTime() const override;
+private:
+    double time, previous_time, previous_update;
+    unsigned int frame_count;
+    UpdateLogger* logger;
 };
 
 /// This implementation of `FrameTimer` computes the times step and adds
 /// the frame rate as well as some statistics about the time step to the
 /// `LoopLog` buffer.
 class AdvancedTimer : public FrameTimer {
+public:
+    AdvancedTimer();
+    double Timer() override;
+    double GetTime() const override;
 private:
     double time, previous_time, previous_update;
     double min_dt, max_dt, mean_dt, previous_mean_dt;
@@ -50,10 +54,6 @@ private:
     /// Reset parameters used to compute Welford's online algorithm
     /// for the variance.
     void ResetWelford();
-public:
-    AdvancedTimer();
-    double Timer() override;
-    double GetTime() const override;
 };
 
 } // namespace poincare

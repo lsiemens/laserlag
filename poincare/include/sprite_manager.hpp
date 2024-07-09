@@ -1,5 +1,5 @@
-#ifndef SPRITE_MANAGER_H
-#define SPRITE_MANAGER_H
+#ifndef SPRITE_MANAGER_HPP
+#define SPRITE_MANAGER_HPP
 
 #include <memory>
 #include <string>

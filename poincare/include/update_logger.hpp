@@ -1,5 +1,5 @@
-#ifndef UPDATE_LOGGER_H
-#define UPDATE_LOGGER_H
+#ifndef UPDATE_LOGGER_HPP
+#define UPDATE_LOGGER_HPP
 
 #include <sstream>
 
@@ -12,6 +12,16 @@ namespace poincare {
 /// log info in a live update instead of a stream of text flowing by.
 /// UpdateLogger should only be flushed once per render iteration.
 class UpdateLogger {
+public:
+    std::stringstream log;
+
+    /// Gets and instance of the UpdateLogger singleton.
+    /// @return Pointer to an instance of LoogLoop.
+    static UpdateLogger* GetInstance();
+
+    /// Writes the log buffer to the standard output. This function should
+    /// only be called once in the render loop.
+    void Flush();
 private:
     static UpdateLogger* instance;
 
@@ -23,16 +33,6 @@ private:
 
     UpdateLogger(const UpdateLogger&) = delete;
     UpdateLogger& operator=(const UpdateLogger&) = delete;
-public:
-    std::stringstream log;
-
-    /// Gets and instance of the UpdateLogger singleton.
-    /// @return Pointer to an instance of LoogLoop.
-    static UpdateLogger* GetInstance();
-
-    /// Writes the log buffer to the standard output. This function should
-    /// only be called once in the render loop.
-    void Flush();
 };
 
 } // namespace poincare

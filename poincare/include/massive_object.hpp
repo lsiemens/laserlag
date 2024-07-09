@@ -1,5 +1,5 @@
-#ifndef MASSIVE_OBJECT_H
-#define MASSIVE_OBJECT_H
+#ifndef MASSIVE_OBJECT_HPP
+#define MASSIVE_OBJECT_HPP
 
 #include "minkowski.hpp"
 
