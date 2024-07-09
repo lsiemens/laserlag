@@ -17,6 +17,7 @@ add_library(poincare STATIC
     src/frame_timer.cpp
     src/window.cpp
     src/shader.cpp
+    src/massive_object.cpp
     src/sprite.cpp)
 target_include_directories(poincare PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include ${GLFW3_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS})
 target_link_libraries(poincare glfw GLEW::glew OpenGL::GL minkowski)
