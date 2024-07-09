@@ -8,6 +8,8 @@
 
 #include <GLFW/glfw3.h>
 
+#include "window_manager.hpp"
+
 namespace poincare {
 
 Shader::Shader(std::string vertex_path, std::string fragment_path) : shader_id(0), vertex_path(vertex_path), fragment_path(fragment_path) {
@@ -52,14 +54,16 @@ GLuint Shader::CompileShader(std::string shader_path, GLenum shader_type){
 }
 
 void Shader::LoadShaderProgram() {
-    //TODO check for opengl context
-    std::cerr << "Error Shader does not check if there is a valid openGL context.\n";
-    std::cerr << "TODO Check with WindowManager if there is a valid context.\n";
-
-    if (glfwGetCurrentContext() == NULL) {
-        std::cerr << "Can not load shaders before initializing a OpenGL context.";
-        throw std::runtime_error("No OpenGL context present.");
+    WindowManager* window_manager = WindowManager::GetInstance();
+    if (!window_manager->HasContext()) {
+        std::cerr << "No OpenGL context found by WindowManager\n";
+        throw std::runtime_error("Could not configure shader.\n");
     }
+
+//    if (glfwGetCurrentContext() == NULL) {
+//        std::cerr << "Can not load shaders before initializing a OpenGL context.";
+//        throw std::runtime_error("No OpenGL context present.");
+//    }
 
     GLuint vertex_shader_id = CompileShader(vertex_path, GL_VERTEX_SHADER);
     GLuint fragment_shader_id = CompileShader(fragment_path, GL_FRAGMENT_SHADER);

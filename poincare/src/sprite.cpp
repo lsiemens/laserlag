@@ -4,6 +4,8 @@
 #include <sstream>
 #include <stdexcept>
 
+#include "window_manager.hpp"
+
 namespace poincare {
 
 Sprite::Sprite(std::string vector_sprite_path) : vertex_buffer_id(0), element_buffer_id(0), vector_sprite_path(vector_sprite_path) {
@@ -20,9 +22,11 @@ void Sprite::DrawSprite() {
 }
 
 void Sprite::LoadSprite() {
-    // TODO check WindowManager for a valid context
-    std::cerr << "Error: Sprite does not check for a valid OpenGL context.\n";
-    std::cerr << "TODO: load WindowManager and check if a valid window is open.\n";
+    WindowManager* window_manager = WindowManager::GetInstance();
+    if (!window_manager->HasContext()) {
+        std::cerr << "No OpenGL context found by WindowManager\n";
+        throw std::runtime_error("Could not configure sprite.\n");
+    }
 
     std::vector<GLfloat> vertices;
     std::vector<GLuint> indices;

@@ -2,8 +2,8 @@
 #include <string>
 #include <fstream>
 
-#include "window.hpp"
 #include "sprite.hpp"
+#include "window_manager.hpp"
 
 namespace {
 
@@ -21,9 +21,13 @@ TEST(SpriteTest, initialize) {
         FAIL() << "Failed to write example vsprite file.";
     }
 
-    poincare::Window window(600, 600, "Sprite Test");
-    poincare::Sprite test_sprite(vsprite_path);
+    EXPECT_THROW(poincare::Sprite test_sprite(vsprite_path), std::runtime_error);
 
+    poincare::WindowManager* window_manager = poincare::WindowManager::GetInstance();
+    window_manager->OpenWindow(600, 600, "Sprite Test");
+    EXPECT_NO_THROW(poincare::Sprite test_sprite(vsprite_path));
+
+    poincare::Sprite test_sprite(vsprite_path);
     EXPECT_NE(test_sprite.vertex_buffer_id, 0);
     EXPECT_NE(test_sprite.element_buffer_id, 0);
     EXPECT_EQ(test_sprite.vector_sprite_path, vsprite_path);

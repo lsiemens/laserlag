@@ -2,8 +2,8 @@
 #include <string>
 #include <fstream>
 
-#include "window.hpp"
 #include "shader.hpp"
+#include "window_manager.hpp"
 
 namespace {
 
@@ -29,9 +29,13 @@ TEST(ShaderTest, initialize) {
         FAIL() << "Failed to write example fragment shader.";
     }
 
-    poincare::Window window(600, 600, "Shader Test");
-    poincare::Shader test_shader(vpath, fpath);
+    EXPECT_THROW(poincare::Shader test_shader(vpath, fpath), std::runtime_error);
 
+    poincare::WindowManager* window_manager = poincare::WindowManager::GetInstance();
+    window_manager->OpenWindow(600, 600, "Shader Test");
+    EXPECT_NO_THROW(poincare::Shader test_shader(vpath, fpath));
+
+    poincare::Shader test_shader(vpath, fpath);
     EXPECT_NE(test_shader.shader_id, 0);
 }
 

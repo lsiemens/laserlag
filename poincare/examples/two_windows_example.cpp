@@ -13,7 +13,7 @@ int main() {
     poincare::Window window(600, 400, "Double window example: A", true);
     window.SetColor(glm::vec3(0.5f));
 
-    poincare::Window window2(500, 500, "Double window example: B", true, &window);
+    poincare::Window window2(500, 500, "Double window example: B", true, window.glfw_window);
     window2.SetColor(glm::vec3(0.25f));
 
     // initalize triangle VBO

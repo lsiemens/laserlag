@@ -31,7 +31,7 @@ public:
     /// Worldline of the particle in the systems refrance frame.
     minkowski::Worldline worldline;
 
-    MassiveObject(minkowski::Point position, minkowski::Vector velocity, std::string sprite_path);
+    MassiveObject(minkowski::Point position, minkowski::Vector velocity, std::string vector_sprite_path);
 
     void Update(double dtau);
 private:
