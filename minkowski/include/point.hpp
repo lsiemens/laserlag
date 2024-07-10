@@ -2,6 +2,7 @@
 #define POINT_HPP
 
 //#include "vector.hpp"
+#include <vector>
 
 namespace minkowski {
 
@@ -14,6 +15,8 @@ public:
     bool operator==(Point const& other) const;
     Vector operator-(Point const& other) const;
     Point operator+(Vector const& other) const;
+
+    std::vector<float> ToFloat();
 private:
     double coordinates[3];
 };

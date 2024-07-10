@@ -29,4 +29,12 @@ Point Point::operator+(Vector const& other) const {
     return Point(t, x, y);
 }
 
+std::vector<float> Point::ToFloat() {
+    std::vector<float> values(3);
+    for (int i=0; i<3; i++) {
+        values[i] = static_cast<float>(coordinates[i]);
+    }
+    return values;
+}
+
 } // namespace minkowski

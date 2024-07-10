@@ -1,6 +1,8 @@
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
 
+#include <vector>
+
 #include "point.hpp"
 
 namespace minkowski {
@@ -14,6 +16,8 @@ public:
     friend Vector operator*(double scalar, Vector const& self);
     Vector operator+(Vector const& other) const;
     Vector operator-(Vector const& other) const;
+
+    std::vector<float> ToFloat();
 private:
     double components[3];
 

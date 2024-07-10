@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
 
+#include <vector>
+
 #include "point.hpp"
 #include "vector.hpp"
 
@@ -20,6 +22,13 @@ TEST(PointTest, point_vector_sum) {
 
     EXPECT_EQ(origin + diffrence, minkowski::Point(0.1, 1.2, 2.3));
     EXPECT_EQ(origin + (point - origin), point);
+}
+
+TEST(PointTest, point_to_float) {
+    minkowski::Point point = minkowski::Point(0, 1, 2);
+
+    std::vector<float> std_vector_point{0, 1, 2};
+    EXPECT_EQ(point.ToFloat(), std_vector_point);
 }
 
 } // namespace

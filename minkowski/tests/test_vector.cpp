@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
 
+#include <vector>
+
 #include "vector.hpp"
 
 namespace {
@@ -25,6 +27,13 @@ TEST(VectorTest, addition_subtraction) {
 
     EXPECT_EQ(vectorA + vectorB, minkowski::Vector(7, 4, 5));
     EXPECT_EQ(vectorA - vectorB, minkowski::Vector(-3, -2, -3));
+}
+
+TEST(VectorTest, vector_to_float) {
+    minkowski::Vector vectorA = minkowski::Vector(2, 1, 3);
+
+    std::vector<float> std_vector_a{2, 1, 3};
+    EXPECT_EQ(vectorA.ToFloat(), std_vector_a);
 }
 
 } // namespace
