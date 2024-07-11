@@ -2,14 +2,16 @@
 
 find_package(OpenGL REQUIRED)
 
-add_executable(window_example window_example.cpp)
-target_link_libraries(window_example poincare glfw ${GLEW_LIBRARIES} ${OPENGL_LIBRARIES})
+file(GLOB EXAMPLE_FILES *.cpp)
 
-add_executable(two_windows_example two_windows_example.cpp)
-target_link_libraries(two_windows_example poincare glfw ${GLEW_LIBRARIES} ${OPENGL_LIBRARIES})
+foreach(EXAMPLE_SOURCE ${EXAMPLE_FILES})
+    get_filename_component(EXAMPLE_NAME ${EXAMPLE_SOURCE} NAME_WE)
 
-add_executable(sprite_example sprite_example.cpp)
-target_link_libraries(sprite_example poincare glfw ${GLEW_LIBRARIES} ${OPENGL_LIBRARIES})
+    add_executable(${EXAMPLE_NAME} ${EXAMPLE_SOURCE})
+    target_link_libraries(${EXAMPLE_NAME} PRIVATE poincare glfw ${GLEW_LIBRARIES} ${OPENGLE_LIBRARIES})
 
-add_executable(two_windows_sprite_example two_windows_sprite_example.cpp)
-target_link_libraries(two_windows_sprite_example poincare glfw ${GLEW_LIBRARIES} ${OPENGL_LIBRARIES})
+    if(${BUILD_EXAMPLES_AS_TESTS})
+        add_test(NAME example_${EXAMPLE_NAME} COMMAND ${EXAMPLE_NAME})
+        set_tests_properties(example_${EXAMPLE_NAME} PROPERTIES LABELS "examples")
+    endif()
+endforeach()

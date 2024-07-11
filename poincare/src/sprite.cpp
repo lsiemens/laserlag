@@ -6,6 +6,10 @@
 
 #include "window_manager.hpp"
 
+static const int kPositionSize = 2;
+static const int kColorSize = 3;
+static constexpr int kVertexSize = kPositionSize + kColorSize;
+
 namespace poincare {
 
 Sprite::Sprite(std::string vector_sprite_path) : vertex_buffer_id(0), element_buffer_id(0), vector_sprite_path(vector_sprite_path) {
@@ -13,11 +17,18 @@ Sprite::Sprite(std::string vector_sprite_path) : vertex_buffer_id(0), element_bu
 }
 
 void Sprite::DrawSprite() {
-    // TODO fill this out
-    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_id);
+
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer_id);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5*sizeof(GLfloat), (void*)0);
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_id);
+
+    // Setup vertex position array
+    glVertexAttribPointer(0, kPositionSize, GL_FLOAT, GL_FALSE, kVertexSize*sizeof(GLfloat), (void*)0);
     glEnableVertexAttribArray(0);
+
+    // Setup vertex color array
+    glVertexAttribPointer(1, kColorSize, GL_FLOAT, GL_FALSE, kVertexSize*sizeof(GLfloat), (void*)(kPositionSize*sizeof(GLfloat)));
+    glEnableVertexAttribArray(1);
+
     glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_INT, 0);
 }
 
@@ -37,7 +48,7 @@ void Sprite::LoadSprite() {
     // Load VBO
     glGenBuffers(1, &vertex_buffer_id);
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_id);
-    glBufferData(GL_ARRAY_BUFFER, (5*sizeof(GLfloat))*num_vertices, &vertices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, (kVertexSize*sizeof(GLfloat))*num_vertices, &vertices[0], GL_STATIC_DRAW);
 
     // Load EBO
     glGenBuffers(1, &element_buffer_id);
@@ -107,13 +118,13 @@ std::vector<GLfloat> Sprite::ReadVertices(std::ifstream &file_data, int num_vert
     for (int i=0; i<num_vertices; i++) {
         std::vector<GLfloat> values;
         ParseString(file_data, values);
-        if (values.size() < 5) {
+        if (values.size() < kVertexSize) {
             std::cerr << "Could not parse vertex. The vsprite file at '" << vector_sprite_path << "' could be corrupted.\n";
             throw std::runtime_error("Could not load vsprite file.");
-        } else if (values.size() > 5) {
-            std::clog << "Warning expected 5 floats for vertex, found " << values.size() << ". The vsprite file at '" << vector_sprite_path << "' could be corrupted.\n";
+        } else if (values.size() > kVertexSize) {
+            std::clog << "Warning expected " << kVertexSize << " floats for vertex, found " << values.size() << ". The vsprite file at '" << vector_sprite_path << "' could be corrupted.\n";
         }
-        vertices.insert(vertices.end(), values.begin(), values.begin() + 5);
+        vertices.insert(vertices.end(), values.begin(), values.begin() + kVertexSize);
     }
     return vertices;
 }

@@ -31,12 +31,13 @@ public:
     /// Worldline of the particle in the systems refrance frame.
     minkowski::Worldline worldline;
 
-    MassiveObject(minkowski::Point position, minkowski::Vector velocity, std::string vector_sprite_path);
-
-    void Update(double dtau);
-private:
     /// The sprite to render for this object
     std::shared_ptr<Sprite> sprite;
+
+    MassiveObject(minkowski::Point position, minkowski::Vector velocity, std::string vector_sprite_path);
+
+    void UpdateObject(double dtau);
+private:
 };
 
 } // namespace poincare

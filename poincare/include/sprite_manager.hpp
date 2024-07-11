@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+#include "shader.hpp"
+
 namespace poincare {
 
 class Sprite;
@@ -18,8 +20,13 @@ public:
     /// Get a shared pointer to the sprite at vector_sprite_path. If it
     /// is not cached the sprite will be loaded and added to the cache.
     std::shared_ptr<Sprite> GetSprite(std::string vector_sprite_path);
+
+    void SetShader(Shader shader);
+
+    void DrawSprites();
 private:
     static SpriteManager* instance;
+    Shader shader;
 
     std::vector<std::shared_ptr<Sprite>> sprite_list;
 

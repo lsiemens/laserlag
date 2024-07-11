@@ -12,8 +12,24 @@
 
 namespace poincare {
 
-Shader::Shader(std::string vertex_path, std::string fragment_path) : shader_id(0), vertex_path(vertex_path), fragment_path(fragment_path) {
+Shader::Shader() {
+    shader_id = 0;
+    vertex_path = "";
+    fragment_path = "";
+    position_id = -1;
+    velocity_id = -1;
+}
+
+Shader::Shader(std::string vertex_path, std::string fragment_path) : vertex_path(vertex_path), fragment_path(fragment_path) {
+    shader_id = 0;
     LoadShaderProgram();
+
+    position_id = glGetUniformLocation(shader_id, "position");
+    velocity_id = glGetUniformLocation(shader_id, "velocity");
+}
+
+void Shader::SetActive() {
+    glUseProgram(shader_id);
 }
 
 GLuint Shader::CompileShader(std::string shader_path, GLenum shader_type){

@@ -19,6 +19,13 @@ between words.
 
 Example `x_range`
 
+# Constants
+Constants should use upper case for the first letter of each word and
+they should not use underscores between words. Additionaly they should
+start with "k".
+
+Example `kSpeedOfLight`
+
 # Function Names
 Functions should use upper case for the first letter of each word and
 they should not use underscores between words.

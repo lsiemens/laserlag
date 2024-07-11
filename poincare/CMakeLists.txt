@@ -20,12 +20,14 @@ add_library(poincare STATIC
     src/shader.cpp
     src/sprite.cpp
     src/sprite_manager.cpp
-    src/massive_object.cpp)
+    src/massive_object.cpp
+    src/object_manager.cpp)
 target_include_directories(poincare PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include ${GLFW3_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS})
 target_link_libraries(poincare glfw GLEW::glew OpenGL::GL minkowski)
 target_compile_options(poincare PRIVATE -Wall -Wextra -Wpedantic)
 
 # add examples
+enable_testing()
 add_subdirectory(examples)
 add_custom_target(resources ALL COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/examples/resources ${CMAKE_CURRENT_BINARY_DIR}/examples/resources)
 

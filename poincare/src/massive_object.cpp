@@ -12,7 +12,7 @@ MassiveObject::MassiveObject(minkowski::Point position, minkowski::Vector veloci
     worldline.AddPoint(position);
 }
 
-void MassiveObject::Update(double dtau) {
+void MassiveObject::UpdateObject(double dtau) {
     position = position + dtau*velocity;
     proper_time += dtau;
 

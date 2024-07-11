@@ -28,11 +28,11 @@ TEST(MassiveObjectTest, initialize) {
     minkowski::Vector vec(1.2, 0, 1);
 
     poincare::MassiveObject obj(pos, vec, "vsprite.dat");
-    obj.Update(1.23);
+    obj.UpdateObject(1.23);
 
     EXPECT_EQ(obj.proper_time, 1.23);
     EXPECT_EQ(obj.position, minkowski::Point(1.2*1.23, 0, 1.23));
-    obj.Update(1.23);
+    obj.UpdateObject(1.23);
 
     EXPECT_EQ(obj.proper_time, 2*1.23);
     EXPECT_EQ(obj.position, minkowski::Point(2*1.2*1.23, 0, 2*1.23));
