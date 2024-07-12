@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <vector>
+#include <glm/glm.hpp>
 
 #include "point.hpp"
 #include "vector.hpp"
@@ -27,8 +27,8 @@ TEST(PointTest, point_vector_sum) {
 TEST(PointTest, point_to_float) {
     minkowski::Point point = minkowski::Point(0, 1, 2);
 
-    std::vector<float> std_vector_point{0, 1, 2};
-    EXPECT_EQ(point.ToFloat(), std_vector_point);
+    glm::vec3 std_vector_point(1, 2, 0);
+    EXPECT_EQ(point.ToGLM(), std_vector_point);
 }
 
 } // namespace

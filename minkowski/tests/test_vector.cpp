@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <vector>
+#include <glm/glm.hpp>
 
 #include "vector.hpp"
 
@@ -32,8 +32,8 @@ TEST(VectorTest, addition_subtraction) {
 TEST(VectorTest, vector_to_float) {
     minkowski::Vector vectorA = minkowski::Vector(2, 1, 3);
 
-    std::vector<float> std_vector_a{2, 1, 3};
-    EXPECT_EQ(vectorA.ToFloat(), std_vector_a);
+    glm::vec3 std_vector_a(1, 3, 2);
+    EXPECT_EQ(vectorA.ToGLM(), std_vector_a);
 }
 
 } // namespace

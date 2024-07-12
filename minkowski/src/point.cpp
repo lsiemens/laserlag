@@ -4,6 +4,12 @@
 
 namespace minkowski {
 
+Point::Point() {
+    coordinates[0] = 0;
+    coordinates[1] = 0;
+    coordinates[2] = 0;
+}
+
 Point::Point(double t, double x, double y) {
     coordinates[0] = t;
     coordinates[1] = x;
@@ -29,11 +35,11 @@ Point Point::operator+(Vector const& other) const {
     return Point(t, x, y);
 }
 
-std::vector<float> Point::ToFloat() {
-    std::vector<float> values(3);
-    for (int i=0; i<3; i++) {
-        values[i] = static_cast<float>(coordinates[i]);
-    }
+glm::vec3 Point::ToGLM() {
+    glm::vec3 values(0.0f);
+    values.x = static_cast<float>(coordinates[1]);
+    values.y = static_cast<float>(coordinates[2]);
+    values.z = static_cast<float>(coordinates[0]);
     return values;
 }
 

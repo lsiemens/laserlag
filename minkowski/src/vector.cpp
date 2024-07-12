@@ -2,6 +2,12 @@
 
 namespace minkowski {
 
+Vector::Vector() {
+    components[0] = 0;
+    components[1] = 0;
+    components[2] = 0;
+}
+
 Vector::Vector(double t, double x, double y) {
     components[0] = t;
     components[1] = x;
@@ -39,11 +45,11 @@ Vector Vector::operator-(Vector const& other) const {
     return Vector(t, x, y);
 }
 
-std::vector<float> Vector::ToFloat() {
-    std::vector<float> values(3);
-    for (int i=0; i<3; i++) {
-        values[i] = static_cast<float>(components[i]);
-    }
+glm::vec3 Vector::ToGLM() {
+    glm::vec3 values(0.0f);
+    values.x = static_cast<float>(components[1]);
+    values.y = static_cast<float>(components[2]);
+    values.z = static_cast<float>(components[0]);
     return values;
 }
 
