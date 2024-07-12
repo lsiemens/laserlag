@@ -21,14 +21,13 @@ class Shader {
 public:
     GLuint shader_id;
     std::string vertex_path;
+    std::string geometry_path;
     std::string fragment_path;
 
     LocationIndices location_indices;
-//    int position_id;
-//    int velocity_id;
 
     Shader();
-    Shader(std::string vertex_path, std::string fragment_path);
+    Shader(std::string vertex_path, std::string fragment_path, std::string geometry_path = "");
 
     void SetActive();
 private:

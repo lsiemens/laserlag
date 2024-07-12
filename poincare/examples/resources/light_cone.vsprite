@@ -1,0 +1,8 @@
+VSPRITE
+# Number of vertices and number of triangles
+META DATA
+1 1
+VERTEX DATA
+0 0 1 1 1
+TRIANGLE DATA
+0 0 0

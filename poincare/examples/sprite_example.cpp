@@ -17,8 +17,8 @@ int main() {
 
     window_manager->window_list[0]->SetColor(glm::vec3(0.5, 0.5, 0.5));
 
-    poincare::Shader shader("resources/vertex.shader", "resources/fragment.shader");
-    poincare::Sprite sprite("resources/vector_sprite.dat");
+    poincare::Shader shader("resources/basic.vs", "resources/basic.fs");
+    poincare::Sprite sprite("resources/basic.vsprite");
 
     do {
         glClear(GL_COLOR_BUFFER_BIT);

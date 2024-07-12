@@ -19,8 +19,8 @@ int main() {
     window_manager->OpenWindow(500, 500, "Double window sprite example: B");
     window_manager->window_list[1]->SetColor(glm::vec3(0.25f));
 
-    poincare::Shader shader("resources/vertex.shader", "resources/fragment.shader");
-    poincare::Sprite sprite("resources/vector_sprite.dat");
+    poincare::Shader shader("resources/basic.vs", "resources/basic.fs");
+    poincare::Sprite sprite("resources/basic.vsprite");
 
     do {
         for (auto& window : window_manager->window_list) {

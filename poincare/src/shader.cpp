@@ -15,10 +15,11 @@ namespace poincare {
 Shader::Shader() {
     shader_id = 0;
     vertex_path = "";
+    geometry_path = "";
     fragment_path = "";
 }
 
-Shader::Shader(std::string vertex_path, std::string fragment_path) : vertex_path(vertex_path), fragment_path(fragment_path) {
+Shader::Shader(std::string vertex_path, std::string fragment_path, std::string geometry_path) : vertex_path(vertex_path), geometry_path(geometry_path), fragment_path(fragment_path) {
     shader_id = 0;
     LoadShaderProgram();
 
@@ -77,6 +78,11 @@ void Shader::LoadShaderProgram() {
 
     GLuint vertex_shader_id = CompileShader(vertex_path, GL_VERTEX_SHADER);
     GLuint fragment_shader_id = CompileShader(fragment_path, GL_FRAGMENT_SHADER);
+    GLuint geometry_shader_id;
+
+    if (geometry_path != "") {
+        geometry_shader_id = CompileShader(geometry_path, GL_GEOMETRY_SHADER);
+    }
 
     GLint result = GL_FALSE;
     int info_log_length;
@@ -85,6 +91,9 @@ void Shader::LoadShaderProgram() {
     GLuint program_id = glCreateProgram();
     glAttachShader(program_id, vertex_shader_id);
     glAttachShader(program_id, fragment_shader_id);
+    if (geometry_path != "") {
+        glAttachShader(program_id, geometry_shader_id);
+    }
     glLinkProgram(program_id);
 
     //Error Check
@@ -100,9 +109,15 @@ void Shader::LoadShaderProgram() {
     //Cleanup
     glDetachShader(program_id, vertex_shader_id);
     glDetachShader(program_id, fragment_shader_id);
+    if (geometry_path != "") {
+        glDetachShader(program_id, geometry_shader_id);
+    }
 
     glDeleteShader(vertex_shader_id);
     glDeleteShader(fragment_shader_id);
+    if (geometry_path != "") {
+        glDeleteShader(geometry_shader_id);
+    }
 
     shader_id = program_id;
 }

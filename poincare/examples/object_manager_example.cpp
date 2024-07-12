@@ -18,17 +18,17 @@ using namespace minkowski;
 int main() {
     WindowManager* window_manager = WindowManager::GetInstance();
     window_manager->SetVsync(false);
-    window_manager->OpenWindow(600, 400, "Sprite example");
+    window_manager->OpenWindow(600, 400, "Object Manager example");
     window_manager->window_list[0]->SetColor(glm::vec3(0.25));
 
     SpriteManager* sprite_manager = SpriteManager::GetInstance();
-    sprite_manager->SetShader(Shader("resources/vertex.shader", "resources/fragment.shader"));
+    sprite_manager->SetShader(Shader("resources/basic.vs", "resources/basic.fs"));
 
     ObjectManager* object_manager = ObjectManager::GetInstance();
-    MassiveObject object(Point(0, 0, 0), Vector(1, 0.1, 0), "resources/vector_sprite.dat");
+    MassiveObject object(Point(0, 0, 0), Vector(1, 0.1, 0), "resources/basic.vsprite");
     object_manager->massive_object_list.push_back(object);
 
-    object_manager->massive_object_list.push_back(MassiveObject(Point(0, 0, 0), Vector(1, 0.1, 0.1), "resources/vector_sprite.dat"));
+    object_manager->massive_object_list.push_back(MassiveObject(Point(0, 0, 0), Vector(1, 0.1, 0.1), "resources/basic.vsprite"));
 
     AdvancedTimer system_clock;
 
