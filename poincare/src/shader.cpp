@@ -16,16 +16,15 @@ Shader::Shader() {
     shader_id = 0;
     vertex_path = "";
     fragment_path = "";
-    position_id = -1;
-    velocity_id = -1;
 }
 
 Shader::Shader(std::string vertex_path, std::string fragment_path) : vertex_path(vertex_path), fragment_path(fragment_path) {
     shader_id = 0;
     LoadShaderProgram();
 
-    position_id = glGetUniformLocation(shader_id, "position");
-    velocity_id = glGetUniformLocation(shader_id, "velocity");
+    location_indices.position_id = glGetUniformLocation(shader_id, "position");
+    location_indices.velocity_id = glGetUniformLocation(shader_id, "velocity");
+    location_indices.camera_transform_id = glGetUniformLocation(shader_id, "camera_transform");
 }
 
 void Shader::SetActive() {
@@ -75,11 +74,6 @@ void Shader::LoadShaderProgram() {
         std::cerr << "No OpenGL context found by WindowManager\n";
         throw std::runtime_error("Could not configure shader.\n");
     }
-
-//    if (glfwGetCurrentContext() == NULL) {
-//        std::cerr << "Can not load shaders before initializing a OpenGL context.";
-//        throw std::runtime_error("No OpenGL context present.");
-//    }
 
     GLuint vertex_shader_id = CompileShader(vertex_path, GL_VERTEX_SHADER);
     GLuint fragment_shader_id = CompileShader(fragment_path, GL_FRAGMENT_SHADER);

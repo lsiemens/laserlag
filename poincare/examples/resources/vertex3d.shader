@@ -7,7 +7,9 @@ out vec4 vertexColor;
 uniform vec3 position;
 uniform vec3 velocity;
 
+uniform mat4 camera_transform;
+
 void main() {
-    gl_Position = vec4(position.xy + vsprite_position, 0, 1.0);
+    gl_Position = camera_transform*(vec4(position, 1.0) + vec4(vsprite_position, 0, 1.0));
     vertexColor = vec4(vsprite_color, 1.0);
 }

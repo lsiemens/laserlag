@@ -38,7 +38,7 @@ void SpriteManager::DrawSprites() {
     ObjectManager* object_manager = ObjectManager::GetInstance();
 
     for (MassiveObject &object : object_manager->massive_object_list) {
-        glUniform3fv(shader.position_id, 1, object.position.ToFloat().data());
+        glUniform3fv(shader.location_indices.position_id, 1, &object.position.ToGLM()[0]);
         object.sprite->DrawSprite();
     }
 }

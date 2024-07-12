@@ -8,14 +8,24 @@
 
 namespace poincare {
 
+struct LocationIndices {
+    /// Object position for vertex shader
+    int position_id = -1;
+    /// Object velocity for vertex shader
+    int velocity_id = -1;
+    /// Camera transform for vertex shader
+    int camera_transform_id = -1;
+};
+
 class Shader {
 public:
     GLuint shader_id;
     std::string vertex_path;
     std::string fragment_path;
 
-    int position_id;
-    int velocity_id;
+    LocationIndices location_indices;
+//    int position_id;
+//    int velocity_id;
 
     Shader();
     Shader(std::string vertex_path, std::string fragment_path);

@@ -21,12 +21,14 @@ public:
     /// is not cached the sprite will be loaded and added to the cache.
     std::shared_ptr<Sprite> GetSprite(std::string vector_sprite_path);
 
+    /// The currently active shader
+    Shader shader;
+
     void SetShader(Shader shader);
 
     void DrawSprites();
 private:
     static SpriteManager* instance;
-    Shader shader;
 
     std::vector<std::shared_ptr<Sprite>> sprite_list;
 
