@@ -26,7 +26,7 @@ int main() {
     SpriteManager* sprite_manager = SpriteManager::GetInstance();
     sprite_manager->render_shaders.object = Shader("resources/basic.vs", "resources/basic.fs");
     sprite_manager->render_shaders.light_cone = Shader("resources/light_cone.vs", "resources/light_cone.fs", "resources/light_cone.gs");
-    sprite_manager->render_shaders.world_line = Shader("resources/light_cone.vs", "resources/light_cone.fs", "resources/light_cone.gs");
+    sprite_manager->render_shaders.world_line = Shader("resources/world_line.vs", "resources/world_line.fs", "resources/world_line.gs");
     sprite_manager->null_sprite = sprite_manager->GetSprite("resources/light_cone.vsprite");
 
     ObjectManager* object_manager = ObjectManager::GetInstance();
@@ -58,9 +58,10 @@ int main() {
         time = system_clock.GetTime();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        double camera_rate = 1;
-        camera3d.position = Point(10, 20*std::cos(camera_rate*time), 20*std::sin(camera_rate*time));
-        camera3d.direction = Vector(-10, -20*std::cos(camera_rate*time), -20*std::sin(camera_rate*time));
+        double camera_rate = 0.3;
+        double camera_distance = 60;
+        camera3d.position = Point(10, camera_distance*std::cos(camera_rate*time), camera_distance*std::sin(camera_rate*time));
+        camera3d.direction = Vector(-10, -camera_distance*std::cos(camera_rate*time), -camera_distance*std::sin(camera_rate*time));
 
         double speed = 0.9;
         double gamma = 1/std::sqrt(1 - speed*speed);

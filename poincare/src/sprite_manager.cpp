@@ -68,14 +68,33 @@ void SpriteManager::Draw3D(Camera &camera) {
     }
 
     // Draw world lines
-    std::cout << "TODO write worldline shaders and add them to the sprite manager for use in camera example\n";
     SetShader(ShaderTypes::kWorldLineShader);
     camera.ApplyTransform();
 
+    float* wl = new float[128*3];
+
     for (MassiveObject &object : object_manager->massive_object_list) {
+        for (int i=0; i<128; i++) {
+            int stride = 2000;
+            if (i < object.worldline.size()/stride) {
+                glm::vec3 pos = object.worldline[stride*i].ToGLM();
+                wl[0 + 3*i] = pos.x;
+                wl[1 + 3*i] = pos.y;
+                wl[2 + 3*i] = pos.z;
+            } else {
+                glm::vec3 pos = object.worldline[object.worldline.size() - 1].ToGLM();
+                wl[0 + 3*i] = pos.x;
+                wl[1 + 3*i] = pos.y;
+                wl[2 + 3*i] = pos.z;
+            }
+        }
+
         glUniform3fv(render_shaders.world_line.location_indices.position_id, 1, &object.position.ToGLM()[0]);
-        null_sprite->DrawSprite();
+        glUniform3fv(render_shaders.world_line.location_indices.world_line_id, 128, wl);
+        object.sprite->DrawSprite();
     }
+
+    delete [] wl;
 }
 
 void SpriteManager::DrawSprites() {
