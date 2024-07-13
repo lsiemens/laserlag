@@ -1,5 +1,8 @@
 #include "sprite_manager.hpp"
 
+#include <iostream>
+#include <stdexcept>
+
 #include "sprite.hpp"
 #include "massive_object.hpp"
 #include "object_manager.hpp"
@@ -29,17 +32,82 @@ std::shared_ptr<Sprite> SpriteManager::GetSprite(std::string vector_sprite_path)
     return std::shared_ptr<Sprite>(sprite);
 }
 
-void SpriteManager::SetShader(Shader shader) {
-    this->shader = shader;
-    shader.SetActive();
+Shader SpriteManager::GetCurrentShader() {
+    switch (current_shader) {
+        case ShaderTypes::kObjectShader: {
+            return render_shaders.object;
+        }
+        case ShaderTypes::kLightConeShader: {
+            return render_shaders.light_cone;
+        }
+        case ShaderTypes::kWorldLineShader: {
+            return render_shaders.world_line;
+        }
+        default: {
+            std::cerr << "Error: Shader type of the current shader not recognized.\n";
+            throw std::runtime_error("Could not find the current shader.");
+        }
+    }
+}
+
+void SpriteManager::Draw3D(Camera &camera) {
+    ObjectManager* object_manager = ObjectManager::GetInstance();
+
+    if (null_sprite == nullptr) {
+        std::cerr << "No sprite has been loaded as null_sprite.\n";
+        throw std::runtime_error("Could not draw light cones.");
+    }
+
+    // Draw light cones
+    SetShader(ShaderTypes::kLightConeShader);
+    camera.ApplyTransform();
+
+    for (MassiveObject &object : object_manager->massive_object_list) {
+        glUniform3fv(render_shaders.light_cone.location_indices.position_id, 1, &object.position.ToGLM()[0]);
+        null_sprite->DrawSprite();
+    }
+
+    // Draw world lines
+    std::cout << "TODO write worldline shaders and add them to the sprite manager for use in camera example\n";
+    SetShader(ShaderTypes::kWorldLineShader);
+    camera.ApplyTransform();
+
+    for (MassiveObject &object : object_manager->massive_object_list) {
+        glUniform3fv(render_shaders.world_line.location_indices.position_id, 1, &object.position.ToGLM()[0]);
+        null_sprite->DrawSprite();
+    }
 }
 
 void SpriteManager::DrawSprites() {
     ObjectManager* object_manager = ObjectManager::GetInstance();
 
+    SetShader(ShaderTypes::kObjectShader);
     for (MassiveObject &object : object_manager->massive_object_list) {
-        glUniform3fv(shader.location_indices.position_id, 1, &object.position.ToGLM()[0]);
+        glUniform3fv(render_shaders.object.location_indices.position_id, 1, &object.position.ToGLM()[0]);
         object.sprite->DrawSprite();
+    }
+}
+
+void SpriteManager::SetShader(ShaderTypes shader_type) {
+    switch (shader_type) {
+        case ShaderTypes::kObjectShader: {
+            render_shaders.object.SetActive();
+            current_shader = ShaderTypes::kObjectShader;
+            break;
+        }
+        case ShaderTypes::kLightConeShader: {
+            render_shaders.light_cone.SetActive();
+            current_shader = ShaderTypes::kLightConeShader;
+            break;
+        }
+        case ShaderTypes::kWorldLineShader: {
+            render_shaders.world_line.SetActive();
+            current_shader = ShaderTypes::kWorldLineShader;
+            break;
+        }
+        default: {
+            std::cerr << "Error: Shader type not recognized. The current shader will not be changed.\n";
+        }
     }
 }
 

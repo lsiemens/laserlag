@@ -6,10 +6,24 @@
 #include <vector>
 
 #include "shader.hpp"
+#include "camera.hpp"
 
 namespace poincare {
 
 class Sprite;
+class Camera;
+
+struct RenderShaders {
+    Shader object;
+    Shader light_cone;
+    Shader world_line;
+};
+
+enum class ShaderTypes {
+    kObjectShader,
+    kLightConeShader,
+    kWorldLineShader,
+};
 
 class SpriteManager {
 public:
@@ -21,16 +35,30 @@ public:
     /// is not cached the sprite will be loaded and added to the cache.
     std::shared_ptr<Sprite> GetSprite(std::string vector_sprite_path);
 
-    /// The currently active shader
-    Shader shader;
+    RenderShaders render_shaders;
 
-    void SetShader(Shader shader);
+    /// Sprite consisting of a single point or triangle with the first
+    /// vertex at 0, 0. This is a hack, in the future no sprite will be
+    /// used, the objects, a point or set of points will be manualy sent
+    /// instead.
+    std::shared_ptr<Sprite> null_sprite;
+
+    Shader GetCurrentShader();
+
+
+// this looks at the window and points to Draw3D or Draw2D
+//    void Draw(Window window);
+
+    void Draw3D(Camera &camera);
 
     void DrawSprites();
 private:
     static SpriteManager* instance;
 
     std::vector<std::shared_ptr<Sprite>> sprite_list;
+    ShaderTypes current_shader;
+
+    void SetShader(ShaderTypes shader_type);
 
     SpriteManager();
 

@@ -22,7 +22,7 @@ int main() {
     window_manager->window_list[0]->SetColor(glm::vec3(0.25));
 
     SpriteManager* sprite_manager = SpriteManager::GetInstance();
-    sprite_manager->SetShader(Shader("resources/basic.vs", "resources/basic.fs"));
+    sprite_manager->render_shaders.object = Shader("resources/basic.vs", "resources/basic.fs");
 
     ObjectManager* object_manager = ObjectManager::GetInstance();
     MassiveObject object(Point(0, 0, 0), Vector(1, 0.1, 0), "resources/basic.vsprite");

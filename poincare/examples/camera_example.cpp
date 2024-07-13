@@ -24,13 +24,18 @@ int main() {
     window_manager->window_list[0]->SetColor(glm::vec3(0.25));
 
     SpriteManager* sprite_manager = SpriteManager::GetInstance();
-    sprite_manager->SetShader(Shader("resources/light_cone.vs", "resources/light_cone.fs", "resources/light_cone.gs"));
+    sprite_manager->render_shaders.object = Shader("resources/basic.vs", "resources/basic.fs");
+    sprite_manager->render_shaders.light_cone = Shader("resources/light_cone.vs", "resources/light_cone.fs", "resources/light_cone.gs");
+    sprite_manager->render_shaders.world_line = Shader("resources/light_cone.vs", "resources/light_cone.fs", "resources/light_cone.gs");
+    sprite_manager->null_sprite = sprite_manager->GetSprite("resources/light_cone.vsprite");
 
     ObjectManager* object_manager = ObjectManager::GetInstance();
-    MassiveObject object(Point(0, 0, 0), Vector(1, 0, 0), "resources/light_cone.vsprite");
+    MassiveObject object(Point(0, 0, 0), Vector(1, 0, 0), "resources/basic.vsprite");
     object_manager->massive_object_list.push_back(object);
 
-    object_manager->massive_object_list.push_back(MassiveObject(Point(0, 0, 0), 1.89*Vector(1, 0.6, 0.6), "resources/light_cone.vsprite"));
+    object_manager->massive_object_list.push_back(MassiveObject(Point(0, 0, 0), 1.89*Vector(1, 0.6, 0.6), "resources/basic.vsprite"));
+
+    object_manager->massive_object_list.push_back(MassiveObject(Point(0, 10, -10), Vector(1, 0, 0), "resources/basic.vsprite"));
 
     Camera3D camera3d;
     camera3d.position = Point(20, -60, 0);
@@ -53,13 +58,18 @@ int main() {
         time = system_clock.GetTime();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        camera3d.position = Point(10, 20*std::cos(time), 20*std::sin(time));
-        camera3d.direction = Vector(-10, -20*std::cos(time), -20*std::sin(time));
+        double camera_rate = 1;
+        camera3d.position = Point(10, 20*std::cos(camera_rate*time), 20*std::sin(camera_rate*time));
+        camera3d.direction = Vector(-10, -20*std::cos(camera_rate*time), -20*std::sin(camera_rate*time));
 
-        camera3d.ApplyTransform();
+        double speed = 0.9;
+        double gamma = 1/std::sqrt(1 - speed*speed);
+        double rate = 3;
+        object_manager->massive_object_list[2].velocity = gamma*Vector(1, speed*std::cos(rate*time), speed*std::sin(rate*time));
+
         object_manager->UpdateObjects(dtau);
 
-        sprite_manager->DrawSprites();
+        sprite_manager->Draw3D(camera3d);
 
         glfwSwapBuffers(window_manager->window_list[0]->glfw_window);
         glfwPollEvents();

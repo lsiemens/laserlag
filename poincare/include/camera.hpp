@@ -13,6 +13,7 @@ public:
     minkowski::Vector velocity;
 
     void ApplyTransform();
+
 private:
     virtual glm::mat4 GetViewMatrix() = 0;
     virtual glm::mat4 GetProjectionMatrix() = 0;

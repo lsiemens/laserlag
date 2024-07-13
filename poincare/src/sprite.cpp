@@ -12,11 +12,19 @@ static constexpr int kVertexSize = kPositionSize + kColorSize;
 
 namespace poincare {
 
+Sprite::Sprite() : vertex_buffer_id(0), element_buffer_id(0), vector_sprite_path("") {
+}
+
 Sprite::Sprite(std::string vector_sprite_path) : vertex_buffer_id(0), element_buffer_id(0), vector_sprite_path(vector_sprite_path) {
     LoadSprite();
 }
 
 void Sprite::DrawSprite() {
+    std::cout.flush();
+    if ((vertex_buffer_id == 0) || (element_buffer_id == 0)) {
+        std::cerr << "Sprite has not been loaded.\n";
+        throw std::runtime_error("Could not draw sprite.\n");
+    }
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer_id);
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_id);
@@ -54,9 +62,6 @@ void Sprite::LoadSprite() {
     glGenBuffers(1, &element_buffer_id);
     glBindBuffer(GL_ARRAY_BUFFER, element_buffer_id);
     glBufferData(GL_ARRAY_BUFFER, sizeof(GLuint)*num_indices, &indices[0], GL_STATIC_DRAW);
-    //glGenBuffers(1, &element_buffer_id);
-    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer_id);
-    //glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*num_indices, &indices[0], GL_STATIC_DRAW);
 
     // Unbind Buffer
     glBindBuffer(GL_ARRAY_BUFFER, 0);

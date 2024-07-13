@@ -29,6 +29,11 @@ Shader::Shader(std::string vertex_path, std::string fragment_path, std::string g
 }
 
 void Shader::SetActive() {
+    if (shader_id == 0) {
+        std::cerr << "No shader loaded.\n";
+        throw std::runtime_error("Could not activate empty shader.");
+    }
+
     glUseProgram(shader_id);
 }
 

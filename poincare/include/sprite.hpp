@@ -43,6 +43,7 @@ public:
     GLuint element_buffer_id;
     std::string vector_sprite_path;
 
+    Sprite();
     Sprite(std::string vector_sprite_path);
 
     void DrawSprite();

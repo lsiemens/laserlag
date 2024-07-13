@@ -1,9 +1,14 @@
 #version 330 core
 
+#define USE_LINES
 #define MAX_VERTICES 63 // Must be odd
 
 layout (triangles) in;
+#ifdef USE_LINES
+layout (line_strip, max_vertices = MAX_VERTICES) out;
+#else
 layout (triangle_strip, max_vertices = MAX_VERTICES) out;
+#endif
 
 in vec4 vertex_color[];
 out vec4 geometry_color;
@@ -38,9 +43,19 @@ void main() {
     float theta = 0;
     for (int i=2; i<iterations; i++) {
         theta = i*dtheta;
+
+#ifdef USE_LINES
+        if (i%2 == 0) {
+            geometry_color = vertex_color[0];
+            gl_Position = camera_transform*(gl_in[0].gl_Position);
+            EmitVertex();
+        }
+#else
         geometry_color = vertex_color[0];
         gl_Position = camera_transform*(gl_in[0].gl_Position);
         EmitVertex();
+#endif
+
         geometry_color = colors(theta);
         gl_Position = camera_transform*(gl_in[0].gl_Position + offset(theta, height));
         EmitVertex();
