@@ -71,8 +71,7 @@ void SpriteManager::Draw(std::shared_ptr<Window> window) {
                 std::cerr << "Error: Failed to cast Camera as Camera2D.\n";
                 throw std::runtime_error("Failed to cast Camera as Camera2D in window designated as 2D.");
             }
-//            Draw2D(camera);
-            std::cerr << "Draw2D unimplimented\n";
+            Draw2D(camera);
             break;
         }
         default: {
@@ -139,6 +138,19 @@ void SpriteManager::Draw3D(std::shared_ptr<Camera3D> camera) {
     }
 
     delete [] world_line_data;
+}
+
+void SpriteManager::Draw2D(std::shared_ptr<Camera2D> camera) {
+    ObjectManager* object_manager = ObjectManager::GetInstance();
+
+    // Draw MassiveObjects
+    SetShader(ShaderTypes::kObjectShader);
+    camera->ApplyTransform();
+
+    for (MassiveObject &object : object_manager->massive_object_list) {
+        glUniform3fv(render_shaders.object.location_indices.position_id, 1, &object.position.ToGLM()[0]);
+        object.sprite->DrawSprite();
+    }
 }
 
 void SpriteManager::DrawSprites() {

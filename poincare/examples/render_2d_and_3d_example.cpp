@@ -19,6 +19,8 @@
 using namespace poincare;
 using namespace minkowski;
 
+namespace {
+
 class CameraControls {
 public:
     double old_u = 0;
@@ -60,16 +62,18 @@ public:
     }
 };
 
+} // namespace
+
 int main() {
     WindowManager* window_manager = WindowManager::GetInstance();
     window_manager->SetVsync(true);
-    window_manager->OpenWindow(600, 400, "Controlls example", poincare::ViewMode::kView3D);
+    window_manager->OpenWindow(600, 400, "Render 2D example", poincare::ViewMode::kView2D);
     window_manager->window_list[0]->SetColor(glm::vec3(0.25));
-    window_manager->OpenWindow(600, 400, "Controlls example: B", poincare::ViewMode::kView3D);
-    window_manager->window_list[1]->SetColor(glm::vec3(0.75));
+    window_manager->OpenWindow(600, 400, "Render 3D example", poincare::ViewMode::kView3D);
+    window_manager->window_list[1]->SetColor(glm::vec3(0.5));
 
     SpriteManager* sprite_manager = SpriteManager::GetInstance();
-    sprite_manager->render_shaders.object = Shader("resources/basic.vs", "resources/basic.fs");
+    sprite_manager->render_shaders.object = Shader("resources/object.vs", "resources/object.fs");
     sprite_manager->render_shaders.light_cone = Shader("resources/light_cone.vs", "resources/light_cone.fs", "resources/light_cone.gs");
     sprite_manager->render_shaders.world_line = Shader("resources/world_line.vs", "resources/world_line.fs", "resources/world_line.gs");
     sprite_manager->null_sprite = sprite_manager->GetSprite("resources/light_cone.vsprite");
@@ -81,13 +85,8 @@ int main() {
     object_manager->massive_object_list.push_back(MassiveObject(Point(0, 0, 0), 1.89*Vector(1, 0.6, 0.6), "resources/basic.vsprite"));
     object_manager->massive_object_list.push_back(MassiveObject(Point(0, 10, -10), Vector(1, 0, 0), "resources/basic.vsprite"));
 
-//    Camera3D camera3d;
-    std::shared_ptr<Camera3D> camera = std::dynamic_pointer_cast<Camera3D>(window_manager->window_list[0]->camera);
-    camera->position = Point(20, -60, 0);
-    camera->direction = Vector(-20, 60, 0);
-
-//    Camera3D camera3d2;
-    camera = std::dynamic_pointer_cast<Camera3D>(window_manager->window_list[1]->camera);
+    // Camera setup
+    std::shared_ptr<Camera3D> camera = std::dynamic_pointer_cast<Camera3D>(window_manager->window_list[1]->camera);
     camera->position = Point(20, 60, 0);
     camera->direction = Vector(-20, -60, 0);
 
@@ -102,7 +101,7 @@ int main() {
 //    glEnable(GL_BLEND);
 //    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    CameraControls camera_controls1;
+//    CameraControls camera_controls1;
     CameraControls camera_controls2;
 
     double dtau, time;
@@ -116,7 +115,6 @@ int main() {
         double rate = 3;
         object_manager->massive_object_list[2].velocity = gamma*Vector(1, speed*std::cos(rate*time), speed*std::sin(rate*time));
 
-        camera_controls1.ControlResponse(dtau, window_manager->window_list[0]);
         camera_controls2.ControlResponse(dtau, window_manager->window_list[1]);
         object_manager->UpdateObjects(dtau);
 
