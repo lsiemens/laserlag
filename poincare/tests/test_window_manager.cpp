@@ -9,11 +9,11 @@ TEST(WindowTest, initialize) {
     poincare::WindowManager* window_manager = poincare::WindowManager::GetInstance();
     EXPECT_FALSE(window_manager->HasContext());
 
-    window_manager->OpenWindow(600, 600, "TEST");
+    window_manager->OpenWindow(600, 600, "TEST", poincare::ViewMode::kView2D);
     EXPECT_NE(window_manager->window_list[0]->glfw_window, nullptr);
     EXPECT_TRUE(window_manager->HasContext());
 
-    window_manager->OpenWindow(600, 600, "TEST2");
+    window_manager->OpenWindow(600, 600, "TEST2", poincare::ViewMode::kView3D);
     EXPECT_NE(window_manager->window_list[1]->glfw_window, nullptr);
     EXPECT_TRUE(window_manager->HasContext());
 }

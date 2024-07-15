@@ -23,7 +23,9 @@ add_library(poincare STATIC
     src/massive_object.cpp
     src/object_manager.cpp
     src/camera.cpp
-    src/camera3d.cpp)
+    src/camera2d.cpp
+    src/camera3d.cpp
+    src/controls.cpp)
 target_include_directories(poincare PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include ${GLFW3_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${GLM_INCLUDE_DIRS})
 target_link_libraries(poincare glfw GLEW::glew OpenGL::GL minkowski)
 target_compile_options(poincare PRIVATE -Wall -Wextra -Wpedantic)

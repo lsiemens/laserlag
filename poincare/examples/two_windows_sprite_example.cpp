@@ -13,10 +13,10 @@
 
 int main() {
     poincare::WindowManager* window_manager = poincare::WindowManager::GetInstance();
-    window_manager->OpenWindow(600, 400, "Double window sprite example: A");
+    window_manager->OpenWindow(600, 400, "Double window sprite example: A", poincare::ViewMode::kView2D);
     window_manager->window_list[0]->SetColor(glm::vec3(0.5f));
 
-    window_manager->OpenWindow(500, 500, "Double window sprite example: B");
+    window_manager->OpenWindow(500, 500, "Double window sprite example: B", poincare::ViewMode::kView2D);
     window_manager->window_list[1]->SetColor(glm::vec3(0.25f));
 
     poincare::Shader shader("resources/basic.vs", "resources/basic.fs");

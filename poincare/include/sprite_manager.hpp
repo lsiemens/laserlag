@@ -6,12 +6,15 @@
 #include <vector>
 
 #include "shader.hpp"
-#include "camera.hpp"
 
 namespace poincare {
 
 class Sprite;
+class Window;
 class Camera;
+class Camera2D;
+class Camera3D;
+
 
 struct RenderShaders {
     Shader object;
@@ -49,7 +52,10 @@ public:
 // this looks at the window and points to Draw3D or Draw2D
 //    void Draw(Window window);
 
-    void Draw3D(Camera &camera);
+    void Draw(std::shared_ptr<Window> window);
+
+    void Draw3D(std::shared_ptr<Camera3D> camera);
+    void Draw2D(std::shared_ptr<Camera2D> camera);
 
     void DrawSprites();
 private:

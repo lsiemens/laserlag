@@ -14,15 +14,15 @@ WindowManager* WindowManager::GetInstance() {
     return instance;
 }
 
-void WindowManager::OpenWindow(int width, int height, std::string title) {
+void WindowManager::OpenWindow(int width, int height, std::string title, ViewMode view_mode) {
     // Find pointer to pimary_window for contex sharing
     GLFWwindow* primary_window = nullptr;
     if (window_list.size() > 0) {
         primary_window = window_list[0]->glfw_window;
     }
 
-    std::unique_ptr<Window> window(new Window(width, height, title, vsync, primary_window));
-    window_list.push_back(std::move(window));
+    std::shared_ptr<Window> window = std::make_shared<Window>(width, height, title, view_mode, vsync, primary_window);
+    window_list.push_back(window);
 
     if (!HasContext()) {
         std::cerr << "No openGL context found\n";

@@ -10,7 +10,7 @@
 #include "window.hpp"
 
 int main() {
-    poincare::Window window(600, 400, "Single window example");
+    poincare::Window window(600, 400, "Single window example", poincare::ViewMode::kView2D);
 
     window.SetColor(glm::vec3(0.5, 0.5, 0.5));
     window.MakeCurrentContext();

@@ -19,13 +19,13 @@ public:
     /// the OpenGL context setup by `Window` even if the vector was not
     /// used. Unique pointers are being used to isolate Window from vector
     /// while allowing appropriate memory management.
-    std::vector<std::unique_ptr<Window>> window_list;
+    std::vector<std::shared_ptr<Window>> window_list;
 
     /// Gets and instance of the WindowManager singleton.
     /// return Pointer to an instance of WindowManager.
     static WindowManager* GetInstance();
 
-    void OpenWindow(int width, int height, std::string title);
+    void OpenWindow(int width, int height, std::string title, ViewMode view_mode);
     bool HasContext();
     void SetVsync(bool vsync);
 private:

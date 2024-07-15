@@ -1,5 +1,5 @@
-#ifndef CAMERA3D_HPP
-#define CAMERA3D_HPP
+#ifndef CAMERA2D_HPP
+#define CAMERA2D_HPP
 
 #include <glm/glm.hpp>
 
@@ -9,12 +9,10 @@
 
 namespace poincare {
 
-class Camera3D : public Camera {
+class Camera2D : public Camera {
 public:
-    minkowski::Vector direction;
-    float fov;
 
-    Camera3D(double aspect_ratio);
+    Camera2D(double aspect_ratio);
 
     void UpdateCamera(double dtau) override;
 private:

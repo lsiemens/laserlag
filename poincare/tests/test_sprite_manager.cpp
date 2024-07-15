@@ -22,7 +22,7 @@ TEST(SpriteManagerTest, initialize) {
     }
 
     poincare::WindowManager* window_manager = poincare::WindowManager::GetInstance();
-    window_manager->OpenWindow(600, 600, "Sprite Manager Test");
+    window_manager->OpenWindow(600, 600, "Sprite Manager Test", poincare::ViewMode::kView2D);
 
     poincare::SpriteManager* sprite_manager = poincare::SpriteManager::GetInstance();
     std::shared_ptr<poincare::Sprite> test_sprite = sprite_manager->GetSprite(vsprite_path);
@@ -48,7 +48,7 @@ TEST(SpriteManagerTest, no_throw_on_draw) {
     }
 
     poincare::WindowManager* window_manager = poincare::WindowManager::GetInstance();
-    window_manager->OpenWindow(600, 600, "Sprite Manager Test");
+    window_manager->OpenWindow(600, 600, "Sprite Manager Test", poincare::ViewMode::kView2D);
 
     poincare::SpriteManager* sprite_manager = poincare::SpriteManager::GetInstance();
     std::shared_ptr<poincare::Sprite> test_sprite = sprite_manager->GetSprite(vsprite_path);

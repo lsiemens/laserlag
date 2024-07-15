@@ -22,7 +22,7 @@ TEST(MassiveObjectTest, initialize) {
     }
 
     poincare::WindowManager* window_manager = poincare::WindowManager::GetInstance();
-    window_manager->OpenWindow(600, 600, "Massive Object Test");
+    window_manager->OpenWindow(600, 600, "Massive Object Test", poincare::ViewMode::kView2D);
 
     minkowski::Point pos(0, 0, 0);
     minkowski::Vector vec(1.2, 0, 1);

@@ -8,6 +8,7 @@ ObjectManager* ObjectManager::GetInstance() {
     if (instance == nullptr) {
         instance = new ObjectManager();
     }
+    return instance;
 }
 
 void ObjectManager::UpdateObjects(double dtau) {

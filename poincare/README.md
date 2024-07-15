@@ -16,16 +16,20 @@ The ordinary types include,
  - `poincare::Window`: Setup and contain a GLFW window.
  - `poincare::Shader`: Contain and load OpenGL shader programs.
  - `poincare::Sprite`: Contain and load 2D sprite.
+ - `poincare::Controls` : Provide user controls from in a given window.
 
 The ordinary managers include,
 
  - `poincare::UpdateLogger`: Write text to the console that can be updated every frame.
  - `poincare::WindowManager`: Contain active windows and manage refrences to them.
- - `poincare::ShaderManager`: Contain loaded shaders and manage refrences to them.
  - `poincare::SpriteManager`: Contain loaded sprites and manage refrences to them.
 
 The relativistic types include,
 
+ - `poincare::Camera`: Common interface for Cameras.
+ - `poincare::Camera2D`: Define the 2D topdown camera view.
+ - `poincare::Camera3D`: Define the 3D camera for debugging and analysis of the 2+1
+   dimensional spacetime.
  - `poincare::MassiveObject`: Contain object data and follows a timelike path in spacetime.
  - `poincare::MasslessObject`: Contain object data and follows a nullgeodesic in spacetime.
  - `poincare::SpacetimeEvent`: Cointain message originating at a spacetime point. Used to
@@ -33,8 +37,5 @@ The relativistic types include,
 
 The relativistic managers include,
 
- - `poincare::Camera2D`: Define the 2D topdown camera view.
- - `poincare::Camera3D`: Define the 3D camera for debugging and analysis of the 2+1
-   dimensional spacetime.
- - `poincare::Spacetime`: Setup and contain loaded objects in spacetime, defines the
+ - `poincare::ObjectManager`: Setup and contain loaded objects in spacetime, defines the
    refrence frame for the system and manages the interactions of objects.

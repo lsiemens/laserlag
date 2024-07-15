@@ -11,8 +11,10 @@ class Camera {
 public:
     minkowski::Point position;
     minkowski::Vector velocity;
+    double aspect_ratio;
 
     void ApplyTransform();
+    virtual void UpdateCamera(double dtau) = 0;
 
 private:
     virtual glm::mat4 GetViewMatrix() = 0;

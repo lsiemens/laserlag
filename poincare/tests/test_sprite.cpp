@@ -24,7 +24,7 @@ TEST(SpriteTest, initialize) {
     EXPECT_THROW(poincare::Sprite test_sprite(vsprite_path), std::runtime_error);
 
     poincare::WindowManager* window_manager = poincare::WindowManager::GetInstance();
-    window_manager->OpenWindow(600, 600, "Sprite Test");
+    window_manager->OpenWindow(600, 600, "Sprite Test", poincare::ViewMode::kView2D);
     EXPECT_NO_THROW(poincare::Sprite test_sprite(vsprite_path));
 
     poincare::Sprite test_sprite(vsprite_path);
@@ -44,7 +44,7 @@ TEST(SpriteTest, no_throw_on_draw) {
         FAIL() << "Failed to write example vsprite file.";
     }
 
-    poincare::Window window(600, 600, "Sprite Test");
+    poincare::Window window(600, 600, "Sprite Test", poincare::ViewMode::kView2D);
     poincare::Sprite test_sprite(vsprite_path);
 
     EXPECT_NO_THROW(test_sprite.DrawSprite());

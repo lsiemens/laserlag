@@ -18,7 +18,7 @@ using namespace minkowski;
 int main() {
     WindowManager* window_manager = WindowManager::GetInstance();
     window_manager->SetVsync(false);
-    window_manager->OpenWindow(600, 400, "Object Manager example");
+    window_manager->OpenWindow(600, 400, "Object Manager example", poincare::ViewMode::kView2D);
     window_manager->window_list[0]->SetColor(glm::vec3(0.25));
 
     SpriteManager* sprite_manager = SpriteManager::GetInstance();

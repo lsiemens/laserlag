@@ -1,4 +1,5 @@
 #include <cmath>
+#include <memory>
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -20,7 +21,7 @@ using namespace minkowski;
 int main() {
     WindowManager* window_manager = WindowManager::GetInstance();
     window_manager->SetVsync(false);
-    window_manager->OpenWindow(600, 400, "Camera example");
+    window_manager->OpenWindow(600, 400, "Camera example", poincare::ViewMode::kView3D);
     window_manager->window_list[0]->SetColor(glm::vec3(0.25));
 
     SpriteManager* sprite_manager = SpriteManager::GetInstance();
@@ -37,9 +38,9 @@ int main() {
 
     object_manager->massive_object_list.push_back(MassiveObject(Point(0, 10, -10), Vector(1, 0, 0), "resources/basic.vsprite"));
 
-    Camera3D camera3d;
-    camera3d.position = Point(20, -60, 0);
-    camera3d.direction = Vector(-20, 60, 0);
+    std::shared_ptr<Camera3D> camera = std::dynamic_pointer_cast<Camera3D>(window_manager->window_list[0]->camera);
+    camera->position = Point(20, -60, 0);
+    camera->direction = Vector(-20, 60, 0);
 
     AdvancedTimer system_clock;
 
@@ -60,8 +61,8 @@ int main() {
 
         double camera_rate = 0.3;
         double camera_distance = 60;
-        camera3d.position = Point(10, camera_distance*std::cos(camera_rate*time), camera_distance*std::sin(camera_rate*time));
-        camera3d.direction = Vector(-10, -camera_distance*std::cos(camera_rate*time), -camera_distance*std::sin(camera_rate*time));
+        camera->position = Point(10, camera_distance*std::cos(camera_rate*time), camera_distance*std::sin(camera_rate*time));
+        camera->direction = Vector(-10, -camera_distance*std::cos(camera_rate*time), -camera_distance*std::sin(camera_rate*time));
 
         double speed = 0.9;
         double gamma = 1/std::sqrt(1 - speed*speed);
@@ -70,7 +71,7 @@ int main() {
 
         object_manager->UpdateObjects(dtau);
 
-        sprite_manager->Draw3D(camera3d);
+        sprite_manager->Draw3D(camera);
 
         glfwSwapBuffers(window_manager->window_list[0]->glfw_window);
         glfwPollEvents();

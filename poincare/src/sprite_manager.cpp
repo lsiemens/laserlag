@@ -4,6 +4,10 @@
 #include <stdexcept>
 
 #include "sprite.hpp"
+#include "camera.hpp"
+#include "camera2d.hpp"
+#include "camera3d.hpp"
+#include "window.hpp"
 #include "massive_object.hpp"
 #include "object_manager.hpp"
 
@@ -50,7 +54,35 @@ Shader SpriteManager::GetCurrentShader() {
     }
 }
 
-void SpriteManager::Draw3D(Camera &camera) {
+void SpriteManager::Draw(std::shared_ptr<Window> window) {
+    switch (window->view_mode) {
+        case ViewMode::kView3D: {
+            std::shared_ptr<Camera3D> camera = std::dynamic_pointer_cast<Camera3D>(window->camera);
+            if (camera == nullptr) {
+                std::cerr << "Error: Failed to cast Camera as Camera3D.\n";
+                throw std::runtime_error("Failed to cast Camera as Camera3D in window designated as 3D.");
+            }
+            Draw3D(camera);
+            break;
+        }
+        case ViewMode::kView2D: {
+            std::shared_ptr<Camera2D> camera = std::dynamic_pointer_cast<Camera2D>(window->camera);
+            if (camera == nullptr) {
+                std::cerr << "Error: Failed to cast Camera as Camera2D.\n";
+                throw std::runtime_error("Failed to cast Camera as Camera2D in window designated as 2D.");
+            }
+//            Draw2D(camera);
+            std::cerr << "Draw2D unimplimented\n";
+            break;
+        }
+        default: {
+            std::cerr << "Only Camera3D and Camera2D are implemented\n";
+            throw std::runtime_error("Unrecognized view mode.");
+        }
+    }
+}
+
+void SpriteManager::Draw3D(std::shared_ptr<Camera3D> camera) {
     ObjectManager* object_manager = ObjectManager::GetInstance();
 
     if (null_sprite == nullptr) {
@@ -60,7 +92,7 @@ void SpriteManager::Draw3D(Camera &camera) {
 
     // Draw light cones
     SetShader(ShaderTypes::kLightConeShader);
-    camera.ApplyTransform();
+    camera->ApplyTransform();
 
     for (MassiveObject &object : object_manager->massive_object_list) {
         glUniform3fv(render_shaders.light_cone.location_indices.position_id, 1, &object.position.ToGLM()[0]);
@@ -69,32 +101,44 @@ void SpriteManager::Draw3D(Camera &camera) {
 
     // Draw world lines
     SetShader(ShaderTypes::kWorldLineShader);
-    camera.ApplyTransform();
+    camera->ApplyTransform();
 
-    float* wl = new float[128*3];
+    float* world_line_data = new float[128*3];
 
+    glm::vec3 pos;
+    glm::vec3 pos_old;
+    double target_interval = 0.25;
     for (MassiveObject &object : object_manager->massive_object_list) {
+        pos_old = object.position.ToGLM();
+
+        int index = 1;
+        int index_old = 0;
+        int dindex = 1;
         for (int i=0; i<128; i++) {
-            int stride = 2000;
-            if (i < object.worldline.size()/stride) {
-                glm::vec3 pos = object.worldline[stride*i].ToGLM();
-                wl[0 + 3*i] = pos.x;
-                wl[1 + 3*i] = pos.y;
-                wl[2 + 3*i] = pos.z;
+            if ((index < object.worldline.size()) && (object.worldline.size() > 10)) {
+                pos = object.worldline[index].ToGLM();
+                world_line_data[0 + 3*i] = pos.x;
+                world_line_data[1 + 3*i] = pos.y;
+                world_line_data[2 + 3*i] = pos.z;
+
+                dindex = std::abs((index - index_old)*target_interval/(pos.z - pos_old.z));
+                pos_old = pos;
+                index_old = index;
+                index += dindex;
             } else {
                 glm::vec3 pos = object.worldline[object.worldline.size() - 1].ToGLM();
-                wl[0 + 3*i] = pos.x;
-                wl[1 + 3*i] = pos.y;
-                wl[2 + 3*i] = pos.z;
+                world_line_data[0 + 3*i] = pos.x;
+                world_line_data[1 + 3*i] = pos.y;
+                world_line_data[2 + 3*i] = pos.z;
             }
         }
 
         glUniform3fv(render_shaders.world_line.location_indices.position_id, 1, &object.position.ToGLM()[0]);
-        glUniform3fv(render_shaders.world_line.location_indices.world_line_id, 128, wl);
+        glUniform3fv(render_shaders.world_line.location_indices.world_line_id, 128, world_line_data);
         object.sprite->DrawSprite();
     }
 
-    delete [] wl;
+    delete [] world_line_data;
 }
 
 void SpriteManager::DrawSprites() {

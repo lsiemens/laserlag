@@ -13,7 +13,7 @@
 
 int main() {
     poincare::WindowManager* window_manager = poincare::WindowManager::GetInstance();
-    window_manager->OpenWindow(600, 400, "Sprite example");
+    window_manager->OpenWindow(600, 400, "Sprite example", poincare::ViewMode::kView2D);
 
     window_manager->window_list[0]->SetColor(glm::vec3(0.5, 0.5, 0.5));
 

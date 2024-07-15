@@ -6,7 +6,7 @@
 namespace {
 
 TEST(WindowTest, initialize) {
-    poincare::Window window(600, 600, "TEST");
+    poincare::Window window(600, 600, "TEST", poincare::ViewMode::kView2D);
     EXPECT_NE(window.glfw_window, nullptr);
 }
 

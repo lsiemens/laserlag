@@ -32,7 +32,7 @@ TEST(ShaderTest, initialize) {
     EXPECT_THROW(poincare::Shader test_shader(vpath, fpath), std::runtime_error);
 
     poincare::WindowManager* window_manager = poincare::WindowManager::GetInstance();
-    window_manager->OpenWindow(600, 600, "Shader Test");
+    window_manager->OpenWindow(600, 600, "Shader Test", poincare::ViewMode::kView2D);
     EXPECT_NO_THROW(poincare::Shader test_shader(vpath, fpath));
 
     poincare::Shader test_shader(vpath, fpath);
