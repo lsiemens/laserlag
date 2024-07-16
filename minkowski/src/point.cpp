@@ -1,6 +1,4 @@
-#include "point.hpp"
-
-#include "vector.hpp"
+#include "minkowski.hpp"
 
 namespace minkowski {
 

@@ -2,7 +2,7 @@
 
 #include <glm/glm.hpp>
 
-#include "vector.hpp"
+#include "minkowski.hpp"
 
 namespace {
 

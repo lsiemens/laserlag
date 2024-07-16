@@ -2,8 +2,7 @@
 
 #include <glm/glm.hpp>
 
-#include "point.hpp"
-#include "vector.hpp"
+#include "minkowski.hpp"
 
 namespace {
 
