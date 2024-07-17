@@ -67,6 +67,8 @@ public:
 
     void AddPoint(Point position, Vector velocity);
     int size() const;
+    Point GetPosition(int index);
+    Vector GetVelocity(int index);
 
     void GetLightConeIntersection(Point cone_position, Point &intersection_position, Vector &intersection_velocity);
     std::vector<float> Resample(double target_period, int max_size);
