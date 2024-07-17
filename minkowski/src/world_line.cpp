@@ -167,16 +167,19 @@ std::vector<float> WorldLine::Resample(double target_period, int max_size) {
 
     std::vector<float> data(6*predicted_size);
 
+    int j;
     for (int i=0; i < predicted_size; i++) {
+        j = size() - (stride*i + 1);
+
         // position: change to OpenGL format
-        data[6*i + 0] = static_cast<float>(path[stride*6*i + 1]);
-        data[6*i + 1] = static_cast<float>(path[stride*6*i + 2]);
-        data[6*i + 2] = static_cast<float>(path[stride*6*i + 0]);
+        data[6*i + 0] = static_cast<float>(path[6*j + 1]);
+        data[6*i + 1] = static_cast<float>(path[6*j + 2]);
+        data[6*i + 2] = static_cast<float>(path[6*j + 0]);
 
         // velocity: change to OpenGL format
-        data[6*i + 3] = static_cast<float>(path[stride*6*i + 4]);
-        data[6*i + 4] = static_cast<float>(path[stride*6*i + 5]);
-        data[6*i + 5] = static_cast<float>(path[stride*6*i + 3]);
+        data[6*i + 3] = static_cast<float>(path[6*j + 4]);
+        data[6*i + 4] = static_cast<float>(path[6*j + 5]);
+        data[6*i + 5] = static_cast<float>(path[6*j + 3]);
     }
 
     return data;
