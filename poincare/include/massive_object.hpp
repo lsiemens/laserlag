@@ -29,7 +29,7 @@ public:
     float orientation;
 
     /// Worldline of the particle in the systems refrance frame.
-    minkowski::Worldline worldline;
+    minkowski::WorldLine world_line;
 
     /// The sprite to render for this object
     std::shared_ptr<Sprite> sprite;

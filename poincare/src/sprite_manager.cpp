@@ -102,42 +102,16 @@ void SpriteManager::Draw3D(std::shared_ptr<Camera3D> camera) {
     SetShader(ShaderTypes::kWorldLineShader);
     camera->ApplyTransform();
 
-    float* world_line_data = new float[128*3];
+    std::vector<float> world_line_data;
 
-    glm::vec3 pos;
-    glm::vec3 pos_old;
     double target_interval = 0.25;
     for (MassiveObject &object : object_manager->massive_object_list) {
-        pos_old = object.position.ToGLM();
-
-        int index = 1;
-        int index_old = 0;
-        int dindex = 1;
-        for (int i=0; i<128; i++) {
-            if ((index < object.worldline.size()) && (object.worldline.size() > 10)) {
-                pos = object.worldline[index].ToGLM();
-                world_line_data[0 + 3*i] = pos.x;
-                world_line_data[1 + 3*i] = pos.y;
-                world_line_data[2 + 3*i] = pos.z;
-
-                dindex = std::abs((index - index_old)*target_interval/(pos.z - pos_old.z));
-                pos_old = pos;
-                index_old = index;
-                index += dindex;
-            } else {
-                glm::vec3 pos = object.worldline[object.worldline.size() - 1].ToGLM();
-                world_line_data[0 + 3*i] = pos.x;
-                world_line_data[1 + 3*i] = pos.y;
-                world_line_data[2 + 3*i] = pos.z;
-            }
-        }
+        world_line_data = object.world_line.Resample(target_interval, 128);
 
         glUniform3fv(render_shaders.world_line.location_indices.position_id, 1, &object.position.ToGLM()[0]);
-        glUniform3fv(render_shaders.world_line.location_indices.world_line_id, 128, world_line_data);
+        glUniform3fv(render_shaders.world_line.location_indices.world_line_id, 128, &world_line_data[0]);
         object.sprite->DrawSprite();
     }
-
-    delete [] world_line_data;
 }
 
 void SpriteManager::Draw2D(std::shared_ptr<Camera2D> camera) {

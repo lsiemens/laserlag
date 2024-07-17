@@ -9,14 +9,14 @@ MassiveObject::MassiveObject(minkowski::Point position, minkowski::Vector veloci
     SpriteManager* sprite_manager = SpriteManager::GetInstance();
     sprite = sprite_manager->GetSprite(vector_sprite_path);
 
-    worldline.AddPoint(position);
+    world_line.AddPoint(position, velocity);
 }
 
 void MassiveObject::UpdateObject(double dtau) {
     position = position + dtau*velocity;
     proper_time += dtau;
 
-    worldline.AddPoint(position);
+    world_line.AddPoint(position, velocity);
 }
 
 } // namespace poincare

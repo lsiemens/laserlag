@@ -145,7 +145,7 @@ void WorldLine::GetLightConeIntersection(Point cone_position, Point &intersectio
     intersection_velocity = GetVelocity(index_far) + t*(GetVelocity(index_near) - GetVelocity(index_far));
 }
 
-std::vector<float> WorldLine::Resample(double target_period, int max_size) {
+std::vector<float> WorldLine::Resample(double target_period, int output_size) {
     double dt = path[6*(size() - 1)] - path[0];
     // Rate that points are added to the path from the perspective of the system
     double data_rate = size()/dt;
@@ -158,28 +158,20 @@ std::vector<float> WorldLine::Resample(double target_period, int max_size) {
         stride = 1;
     }
 
-    // The extra factor of stride - 1 is used to guarentee that predicted_size
-    // rounds upwards
-    int predicted_size = (size() + stride - 1)/stride;
-    if (predicted_size > max_size) {
-        predicted_size = max_size;
-    }
-
-    std::vector<float> data(6*predicted_size);
+    std::vector<float> data(3*output_size);
 
     int j;
-    for (int i=0; i < predicted_size; i++) {
+    for (int i=0; i < output_size; i++) {
         j = size() - (stride*i + 1);
 
-        // position: change to OpenGL format
-        data[6*i + 0] = static_cast<float>(path[6*j + 1]);
-        data[6*i + 1] = static_cast<float>(path[6*j + 2]);
-        data[6*i + 2] = static_cast<float>(path[6*j + 0]);
+        if (j < 0) {
+            j = 0;
+        }
 
-        // velocity: change to OpenGL format
-        data[6*i + 3] = static_cast<float>(path[6*j + 4]);
-        data[6*i + 4] = static_cast<float>(path[6*j + 5]);
-        data[6*i + 5] = static_cast<float>(path[6*j + 3]);
+        // position: change to OpenGL format
+        data[3*i + 0] = static_cast<float>(path[6*j + 1]);
+        data[3*i + 1] = static_cast<float>(path[6*j + 2]);
+        data[3*i + 2] = static_cast<float>(path[6*j + 0]);
     }
 
     return data;

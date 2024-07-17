@@ -134,12 +134,19 @@ TEST(WorldLineTest, resample) {
     world_line.AddPoint(pointD, vecD);
     world_line.AddPoint(pointE, vecE);
 
-    std::vector<float> full({4,0,4,1,0,1,3,0,3,1,0,1,2,0,2,1,0,1,1,0,1,1,0,1,1,2,0,4,5,3});
-    std::vector<float> part({4,0,4,1,0,1,2,0,2,1,0,1,1,2,0,4,5,3});
-    EXPECT_EQ(world_line.Resample(0.5, 100), full);
-    EXPECT_EQ(world_line.Resample(1.0, 100), full);
-    EXPECT_NE(world_line.Resample(2.0, 100), full);
-    EXPECT_EQ(world_line.Resample(2.0, 100), part);
+    std::vector<float> full({4,0,4,3,0,3,2,0,2,1,0,1,1,2,0,1,2,0});
+    std::vector<float> part({4,0,4,2,0,2,1,2,0,1,2,0,1,2,0,1,2,0});
+    EXPECT_EQ(world_line.Resample(0.5, 6), full);
+    EXPECT_EQ(world_line.Resample(1.0, 6), full);
+    EXPECT_NE(world_line.Resample(2.0, 6), full);
+    EXPECT_EQ(world_line.Resample(2.0, 6), part);
+
+    full = std::vector<float>({4,0,4,3,0,3});
+    part = std::vector<float>({4,0,4,2,0,2});
+    EXPECT_EQ(world_line.Resample(0.5, 2), full);
+    EXPECT_EQ(world_line.Resample(1.0, 2), full);
+    EXPECT_NE(world_line.Resample(2.0, 2), full);
+    EXPECT_EQ(world_line.Resample(2.0, 2), part);
 
     minkowski::WorldLine world_line2;
     world_line2.AddPoint(pointA, vecA);
@@ -147,12 +154,12 @@ TEST(WorldLineTest, resample) {
     world_line2.AddPoint(pointC, vecC);
     world_line2.AddPoint(pointD, vecD);
 
-    full = std::vector<float>({3,0,3,1,0,1,2,0,2,1,0,1,1,0,1,1,0,1,1,2,0,4,5,3});
-    part = std::vector<float>({3,0,3,1,0,1,1,0,1,1,0,1});
-    EXPECT_EQ(world_line2.Resample(0.5, 100), full);
-    EXPECT_EQ(world_line2.Resample(1.0, 100), full);
-    EXPECT_NE(world_line.Resample(2.0, 100), full);
-    EXPECT_EQ(world_line2.Resample(2.0, 100), part);
+    full = std::vector<float>({3,0,3,2,0,2,1,0,1,1,2,0,1,2,0,1,2,0});
+    part = std::vector<float>({3,0,3,1,0,1,1,2,0,1,2,0,1,2,0,1,2,0});
+    EXPECT_EQ(world_line2.Resample(0.5, 6), full);
+    EXPECT_EQ(world_line2.Resample(1.0, 6), full);
+    EXPECT_NE(world_line.Resample(2.0, 6), full);
+    EXPECT_EQ(world_line2.Resample(2.0, 6), part);
 }
 
 } // namespace
