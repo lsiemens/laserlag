@@ -55,94 +55,90 @@ Vector WorldLine::GetVelocity(int index) {
 /// to find the indices of the points on the world line where the sign
 /// of the distance changes.
 void WorldLine::GetLightConeIntersection(Point cone_position, Point &intersection_position, Vector &intersection_velocity) {
+    int index_far = 0;
+    int index_near = size() - 1;
+    double distance2_near = (cone_position - GetPosition(index_near))*(cone_position - GetPosition(index_near));
+    double distance2_far = (cone_position - GetPosition(index_far))*(cone_position - GetPosition(index_far));
 
     // Check if the newest point is space like seporated. If not, then
     // there is an error.
-    double distance2_near = (cone_position - GetPosition(size() - 1))*(cone_position - GetPosition(size() - 1));
     if (distance2_near < 0) {
-        std::cout << "World line and point are not space like seporated.\n";
+        std::cerr << "World line and point are not space like seporated.\n";
         throw std::runtime_error("Causality error");
     }
 
+    Vector point_far_cone;
+    Vector world_line_vector;
+
     // Check if the oldest point is space like seporated. If so, the world
     // line should be extended back untill an intersection occurs
-    double distance2_far = (cone_position - GetPosition(0))*(cone_position - GetPosition(0));
     if (distance2_far > 0) {
         // Vector from the cone to the far point
-        Vector point_far_cone = GetPosition(0) - cone_position;
-        // Vector from the far point to the near point
-        Vector velocity_at_far = GetVelocity(0);
+        point_far_cone = GetPosition(index_far) - cone_position;
+        // Vector of the world line at the far point
+        world_line_vector = GetVelocity(index_far);
+    } else {
+        // The intersection is somewhere along the world line. Find the
+        // indices on either side of the intersection point using a binary
+        // search.
+        double distance2_pivot;
+        int index_pivot;
+        while ((index_near - index_far) > 1) {
+            index_pivot = (index_far + index_near)/2;
+            distance2_near = (cone_position - GetPosition(index_near))*(cone_position - GetPosition(index_near));
+            distance2_pivot = (cone_position - GetPosition(index_pivot))*(cone_position - GetPosition(index_pivot));
 
-        double a = velocity_at_far*velocity_at_far;
-        double b = 2*point_far_cone*velocity_at_far;
-        double c = point_far_cone*point_far_cone;
-
-        double t1 = (-b + std::sqrt(b*b - 4*a*c))/(2*a);
-        double t2 = (-b - std::sqrt(b*b - 4*a*c))/(2*a);
-
-        double t;
-        if (t1 <= 0) {
-            t = t1;
-        } else {
-            t = t2;
+            // if the product of these distance squared is greater than zero
+            // then this interval can not contain the intersection, since both
+            // distance squared are nonzero and have the same sign.
+            if (distance2_pivot*distance2_near > 0) {
+                index_near = index_pivot;
+            } else {
+                index_far = index_pivot;
+            }
         }
 
-        // Find position and velocity at the intersection
-        intersection_position = GetPosition(0) + t*velocity_at_far;
-        intersection_velocity = velocity_at_far;
-        return;
+        // Vector from the cone to the far point
+        point_far_cone = GetPosition(index_far) - cone_position;
+        // Vector of the world line at the far point
+        world_line_vector = GetPosition(index_near) - GetPosition(index_far);
     }
 
-    double distance2_pivot;
-    int index_pivot;
-    int index_far = 0;
-    int index_near = size() - 1;
-    while ((index_near - index_far) > 1) {
-        index_pivot = (index_far + index_near)/2;
-        distance2_pivot = (cone_position - GetPosition(index_pivot))*(cone_position - GetPosition(index_pivot));
+    // The world line in the region of interest is parameterized by the
+    // variable t, point_t = point_far + t*world_line_vector. If the
+    // intersection is between two points on the world line then t is in
+    // the range [0, 1] and the line would intersect with the future light
+    // cone at t > 1. If the intersection is past the farthest point then
+    // then the intersection is at t < 0 and the line would intersect with
+    // the future light cone at t > 0. In both cases we want the intersection
+    // with the lesser value of t.
 
-        // if the product of these distance squared is greater than zero
-        // then this interval can not contain the intersection, since both
-        // distance squared are nonzero and have the same sign.
-        if (distance2_pivot*distance2_near > 0) {
-            index_near = index_pivot;
-        } else {
-            index_far = index_pivot;
-        }
-    }
-
-    // The points between the near and far points are parameterized by
-    // Pt = far + t*(near - far) with t in [0, 1]
-    // the distance to the cone of the intermidary point is (Pt - x_0)^2
-    // which is zero if it is on the light cone. So 0 = (far - x_0 + t*(near - far))^2
-    // this can expand to give the expression,
-    // (near - far)^2*t^2 + 2*(far - x_0)*(near - far)*t + (far - x_0)^2 = 0.
-    // Defining a = (near - far)^2, b = 2*(far - x_0)*(near - far), c = (far - x_0)^2
-    // t = (-b+-sqrt(b^2 - 4*a*c))/2a
-
-
-    // Vector from the cone to the far point
-    Vector point_far_cone = GetPosition(index_far) - cone_position;
-    // Vector from the far point to the near point
-    Vector point_near_point_far = GetPosition(index_near) - GetPosition(index_far);
-
-    double a = point_near_point_far*point_near_point_far;
-    double b = 2*point_far_cone*point_near_point_far;
+    // the line intersects with the light cone when the seporation between
+    // the tip of the cone and point_t is a null seporation, so when
+    // (point_t - x_0)^2 = 0, where x_0 is the tip of the light cone.
+    // Expanding out this equation (point_far - x_0 + t*world_line_vector)^2 = 0
+    // gives, world_line_vector^2*t^2 + 2*world_line_vector*(point_far - x_)*t + (point_far - x_0)^2 = 0.
+    // This is a quadratic equation with the coefficents
+    double a = world_line_vector*world_line_vector;
+    double b = 2*world_line_vector*point_far_cone;
     double c = point_far_cone*point_far_cone;
 
-    double t1 = (-b + std::sqrt(b*b - 4*a*c))/(2*a);
-    double t2 = (-b - std::sqrt(b*b - 4*a*c))/(2*a);
+    // the solutions are given by,
+    // t_2 = (-b + sqrt(b^2 - 4a*c))/(2a)
+    // t_1 = (-b - sqrt(b^2 - 4a*c))/(2a)
+    // Note, world_line_vector is time like so a < 0, due to the geometry
+    // of the world line it must intersect once with the future and past
+    // light cones so the term in the square root is positive. Since a
+    // is a nonzero negative number the lesser of the two solutions is
+    double t = (-b + std::sqrt(b*b - 4*a*c))/(2*a);
 
-    double t;
-    if ((t1 >= 0) && (t1 <= 1)) {
-        t = t1;
+    // Find position and velocity at the intersection point with the past light cone
+    intersection_position = GetPosition(index_far) + t*world_line_vector;
+    if (t < 0) {
+        intersection_velocity = world_line_vector;
     } else {
-        t = t2;
+        intersection_velocity = GetVelocity(index_far) + t*(GetVelocity(index_near) - GetVelocity(index_far));
     }
-
-    // Find position and velocity at the intersection
-    intersection_position = GetPosition(index_far) + t*point_near_point_far;
-    intersection_velocity = GetVelocity(index_far) + t*(GetVelocity(index_near) - GetVelocity(index_far));
 }
 
 std::vector<float> WorldLine::Resample(double target_period, int output_size) {
@@ -151,8 +147,6 @@ std::vector<float> WorldLine::Resample(double target_period, int output_size) {
     double data_rate = size()/dt;
 
     int stride = data_rate*target_period;
-
-    std::cout << stride << " Stride.\n";
 
     if (stride < 1) {
         stride = 1;
