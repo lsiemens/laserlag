@@ -79,11 +79,14 @@ int main() {
     sprite_manager->null_sprite = sprite_manager->GetSprite("resources/light_cone.vsprite");
 
     ObjectManager* object_manager = ObjectManager::GetInstance();
-    MassiveObject object(Point(0, 0, 0), Vector(1, 0, 0), "resources/basic.vsprite");
+    std::shared_ptr<MassiveObject> object = std::make_shared<MassiveObject>(Point(0, 0, 0), Vector(1, 0, 0), "resources/basic.vsprite");
     object_manager->massive_object_list.push_back(object);
 
-    object_manager->massive_object_list.push_back(MassiveObject(Point(0, 0, 0), 1.89*Vector(1, 0.6, 0.6), "resources/basic.vsprite"));
-    object_manager->massive_object_list.push_back(MassiveObject(Point(0, 10, -10), Vector(1, 0, 0), "resources/basic.vsprite"));
+    object = std::make_shared<MassiveObject>(Point(0, 0, 0), 1.89*Vector(1, 0.6, 0.6), "resources/basic.vsprite");
+    object_manager->massive_object_list.push_back(object);
+
+    object = std::make_shared<MassiveObject>(Point(0, 10, -10), Vector(1, 0, 0), "resources/basic.vsprite");
+    object_manager->massive_object_list.push_back(object);
 
     // camera setup
     std::shared_ptr<Camera3D> camera = std::dynamic_pointer_cast<Camera3D>(window_manager->window_list[0]->camera);
@@ -117,7 +120,7 @@ int main() {
         double speed = 0.9;
         double gamma = 1/std::sqrt(1 - speed*speed);
         double rate = 3;
-        object_manager->massive_object_list[2].velocity = gamma*Vector(1, speed*std::cos(rate*time), speed*std::sin(rate*time));
+        object_manager->massive_object_list[2]->velocity = gamma*Vector(1, speed*std::cos(rate*time), speed*std::sin(rate*time));
 
         camera_controls1.ControlResponse(dtau, window_manager->window_list[0]);
         camera_controls2.ControlResponse(dtau, window_manager->window_list[1]);

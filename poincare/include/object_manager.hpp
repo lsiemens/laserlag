@@ -1,17 +1,18 @@
 #ifndef OBJECT_MANAGER_HPP
 #define OBJECT_MANAGER_HPP
 
+#include <memory>
 #include <vector>
 
-#include "massive_object.hpp"
-
 namespace poincare {
+
+class MassiveObject;
 
 class ObjectManager {
 public:
     static ObjectManager* GetInstance();
 
-    std::vector<MassiveObject> massive_object_list;
+    std::vector<std::shared_ptr<MassiveObject>> massive_object_list;
 //    std::vector<MasslessObject> massless_object_list;
 //    std::vector<MasiveObject> static_object_list;
 

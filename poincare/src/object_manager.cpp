@@ -1,5 +1,7 @@
 #include "object_manager.hpp"
 
+#include "massive_object.hpp"
+
 namespace poincare {
 
 ObjectManager* ObjectManager::instance = nullptr;
@@ -12,8 +14,8 @@ ObjectManager* ObjectManager::GetInstance() {
 }
 
 void ObjectManager::UpdateObjects(double dtau) {
-    for (MassiveObject &object : massive_object_list) {
-        object.UpdateObject(dtau);
+    for (std::shared_ptr<MassiveObject> &object : massive_object_list) {
+        object->UpdateObject(dtau);
     }
 }
 

@@ -1,3 +1,4 @@
+#include <memory>
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -25,10 +26,11 @@ int main() {
     sprite_manager->render_shaders.object = Shader("resources/basic.vs", "resources/basic.fs");
 
     ObjectManager* object_manager = ObjectManager::GetInstance();
-    MassiveObject object(Point(0, 0, 0), Vector(1, 0.1, 0), "resources/basic.vsprite");
+    std::shared_ptr<MassiveObject> object = std::make_shared<MassiveObject>(Point(0, 0, 0), Vector(1, 0.1, 0), "resources/basic.vsprite");
     object_manager->massive_object_list.push_back(object);
 
-    object_manager->massive_object_list.push_back(MassiveObject(Point(0, 0, 0), Vector(1, 0.1, 0.1), "resources/basic.vsprite"));
+    object = std::make_shared<MassiveObject>(Point(0, 0, 0), Vector(1, 0.1, 0.1), "resources/basic.vsprite");
+    object_manager->massive_object_list.push_back(object);
 
     AdvancedTimer system_clock;
 

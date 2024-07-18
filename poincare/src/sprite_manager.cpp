@@ -93,8 +93,8 @@ void SpriteManager::Draw3D(std::shared_ptr<Camera3D> camera) {
     SetShader(ShaderTypes::kLightConeShader);
     camera->ApplyTransform();
 
-    for (MassiveObject &object : object_manager->massive_object_list) {
-        glUniform3fv(render_shaders.light_cone.location_indices.position_id, 1, &object.position.ToGLM()[0]);
+    for (std::shared_ptr<MassiveObject> &object : object_manager->massive_object_list) {
+        glUniform3fv(render_shaders.light_cone.location_indices.position_id, 1, &object->position.ToGLM()[0]);
         null_sprite->DrawSprite();
     }
 
@@ -105,12 +105,12 @@ void SpriteManager::Draw3D(std::shared_ptr<Camera3D> camera) {
     std::vector<float> world_line_data;
 
     double target_interval = 0.25;
-    for (MassiveObject &object : object_manager->massive_object_list) {
-        world_line_data = object.world_line.Resample(target_interval, 128);
+    for (std::shared_ptr<MassiveObject> &object : object_manager->massive_object_list) {
+        world_line_data = object->world_line.Resample(target_interval, 128);
 
-        glUniform3fv(render_shaders.world_line.location_indices.position_id, 1, &object.position.ToGLM()[0]);
+        glUniform3fv(render_shaders.world_line.location_indices.position_id, 1, &object->position.ToGLM()[0]);
         glUniform3fv(render_shaders.world_line.location_indices.world_line_id, 128, &world_line_data[0]);
-        object.sprite->DrawSprite();
+        object->sprite->DrawSprite();
     }
 }
 
@@ -121,9 +121,9 @@ void SpriteManager::Draw2D(std::shared_ptr<Camera2D> camera) {
     SetShader(ShaderTypes::kObjectShader);
     camera->ApplyTransform();
 
-    for (MassiveObject &object : object_manager->massive_object_list) {
-        glUniform3fv(render_shaders.object.location_indices.position_id, 1, &object.position.ToGLM()[0]);
-        object.sprite->DrawSprite();
+    for (std::shared_ptr<MassiveObject> &object : object_manager->massive_object_list) {
+        glUniform3fv(render_shaders.object.location_indices.position_id, 1, &object->position.ToGLM()[0]);
+        object->sprite->DrawSprite();
     }
 }
 
@@ -131,9 +131,9 @@ void SpriteManager::DrawSprites() {
     ObjectManager* object_manager = ObjectManager::GetInstance();
 
     SetShader(ShaderTypes::kObjectShader);
-    for (MassiveObject &object : object_manager->massive_object_list) {
-        glUniform3fv(render_shaders.object.location_indices.position_id, 1, &object.position.ToGLM()[0]);
-        object.sprite->DrawSprite();
+    for (std::shared_ptr<MassiveObject> &object : object_manager->massive_object_list) {
+        glUniform3fv(render_shaders.object.location_indices.position_id, 1, &object->position.ToGLM()[0]);
+        object->sprite->DrawSprite();
     }
 }
 

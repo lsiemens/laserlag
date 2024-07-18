@@ -15,6 +15,7 @@
 #include "sprite_manager.hpp"
 #include "object_manager.hpp"
 #include "camera3d.hpp"
+#include "camera2d.hpp"
 
 using namespace poincare;
 using namespace minkowski;
@@ -62,6 +63,24 @@ public:
     }
 };
 
+void ObjectController(std::shared_ptr<MassiveObject> target_object, std::shared_ptr<Window> window) {
+    Continuous axes = window->controls->axes;
+
+    double speed = 0.99;
+    double scale = std::sqrt(axes.x*axes.x + axes.y*axes.y);
+
+    Vector velocity;
+    if (scale > 1e-5) {
+        velocity = Vector(1, speed*axes.y/scale, speed*axes.x/scale);
+        double gamma = 1/std::sqrt((-1)*velocity*velocity);
+        velocity = gamma*velocity;
+    } else {
+        velocity = Vector(1, 0, 0);
+    }
+
+    target_object->velocity = velocity;
+}
+
 } // namespace
 
 int main() {
@@ -79,16 +98,22 @@ int main() {
     sprite_manager->null_sprite = sprite_manager->GetSprite("resources/light_cone.vsprite");
 
     ObjectManager* object_manager = ObjectManager::GetInstance();
-    MassiveObject object(Point(0, 0, 0), Vector(1, 0, 0), "resources/basic.vsprite");
+    std::shared_ptr<MassiveObject> object = std::make_shared<MassiveObject>(Point(0, 0, 0), Vector(1, 0, 0), "resources/basic.vsprite");
     object_manager->massive_object_list.push_back(object);
 
-    object_manager->massive_object_list.push_back(MassiveObject(Point(0, 0, 0), 1.89*Vector(1, 0.6, 0.6), "resources/basic.vsprite"));
-    object_manager->massive_object_list.push_back(MassiveObject(Point(0, 10, -10), Vector(1, 0, 0), "resources/basic.vsprite"));
+    object = std::make_shared<MassiveObject>(Point(0, 0, 0), 1.89*Vector(1, 0.6, 0.6), "resources/basic.vsprite");
+    object_manager->massive_object_list.push_back(object);
+
+    object = std::make_shared<MassiveObject>(Point(0, 10, -10), Vector(1, 0, 0), "resources/basic.vsprite");
+    object_manager->massive_object_list.push_back(object);
 
     // Camera setup
     std::shared_ptr<Camera3D> camera = std::dynamic_pointer_cast<Camera3D>(window_manager->window_list[1]->camera);
     camera->position = Point(20, 60, 0);
     camera->direction = Vector(-20, -60, 0);
+
+    std::shared_ptr<Camera2D> camera2d = std::dynamic_pointer_cast<Camera2D>(window_manager->window_list[0]->camera);
+    camera2d->SetTarget(object_manager->massive_object_list[0]);
 
     AdvancedTimer system_clock;
 
@@ -113,8 +138,9 @@ int main() {
         double speed = 0.9;
         double gamma = 1/std::sqrt(1 - speed*speed);
         double rate = 3;
-        object_manager->massive_object_list[2].velocity = gamma*Vector(1, speed*std::cos(rate*time), speed*std::sin(rate*time));
+        object_manager->massive_object_list[2]->velocity = gamma*Vector(1, speed*std::cos(rate*time), speed*std::sin(rate*time));
 
+        ObjectController(object_manager->massive_object_list[0], window_manager->window_list[0]);
         camera_controls2.ControlResponse(dtau, window_manager->window_list[1]);
         object_manager->UpdateObjects(dtau);
 
