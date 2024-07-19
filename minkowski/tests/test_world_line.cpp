@@ -115,6 +115,31 @@ TEST(WorldLineTest, GetLightConeIntersection) {
     EXPECT_THROW(world_line.GetLightConeIntersection(cone_pos, inter_pos, inter_vel), std::runtime_error);
 }
 
+TEST(WorldLineTest, GetIntersectionEstimates) {
+    minkowski::WorldLine world_line;
+    minkowski::Point pointA = minkowski::Point(0, 0, 0);
+    minkowski::Vector vecA = minkowski::Vector(1, 0, 0);
+    minkowski::Point pointB = minkowski::Point(1, 0, 0);
+    minkowski::Vector vecB = minkowski::Vector(1, 0.5, 0);
+
+    world_line.AddPoint(pointA, vecA);
+
+    minkowski::Point cone_pos;
+    double t_past, t_future;
+
+    cone_pos = minkowski::Point(0, 0, 4);
+    world_line.GetIntersectionEstimates(cone_pos, t_past, t_future);
+    EXPECT_EQ(t_past, -4);
+    EXPECT_EQ(t_future, 4);
+
+    world_line.AddPoint(pointB, vecB);
+
+    cone_pos = minkowski::Point(2, 0, 4);
+    world_line.GetIntersectionEstimates(cone_pos, t_past, t_future);
+    EXPECT_NEAR(t_past, -10/3.0L, 1e-5);
+    EXPECT_EQ(t_future, 6);
+}
+
 TEST(WorldLineTest, resample) {
     minkowski::WorldLine world_line;
     minkowski::Point pointA = minkowski::Point(0, 1, 2);

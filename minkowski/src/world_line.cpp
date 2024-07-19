@@ -117,7 +117,7 @@ void WorldLine::GetLightConeIntersection(Point cone_position, Point &intersectio
     // the tip of the cone and point_t is a null seporation, so when
     // (point_t - x_0)^2 = 0, where x_0 is the tip of the light cone.
     // Expanding out this equation (point_far - x_0 + t*world_line_vector)^2 = 0
-    // gives, world_line_vector^2*t^2 + 2*world_line_vector*(point_far - x_)*t + (point_far - x_0)^2 = 0.
+    // gives, world_line_vector^2*t^2 + 2*world_line_vector*(point_far - x_0)*t + (point_far - x_0)^2 = 0.
     // This is a quadratic equation with the coefficents
     double a = world_line_vector*world_line_vector;
     double b = 2*world_line_vector*point_far_cone;
@@ -139,6 +139,37 @@ void WorldLine::GetLightConeIntersection(Point cone_position, Point &intersectio
     } else {
         intersection_velocity = GetVelocity(index_far) + t*(GetVelocity(index_near) - GetVelocity(index_far));
     }
+}
+
+void WorldLine::GetIntersectionEstimates(Point cone_position, double &t_past, double &t_future) {
+    // Vector from the cone to the far point
+    Vector position_offset = GetPosition(size() - 1) - cone_position;
+    // Vector of the world line at the far point
+    Vector velocity = GetVelocity(size() - 1);
+
+    // The world line in the region of interest is parameterized by the
+    // variable t, point_t = position + t*velocity. The estimated
+    // intersection with the past light cone is at t < 0 and the line would
+    // intersect with the future light cone at t > 0.
+
+    // the line intersects with the light cone when the seporation between
+    // the tip of the cone and point_t is a null seporation, so when
+    // (point_t - x_0)^2 = 0, where x_0 is the tip of the light cone.
+    // Expanding out this equation (position - x_0 + t*velocity)^2 = 0
+    // gives, velocity^2*t^2 + 2*velocity*(position - x_0)*t + (position - x_0)^2 = 0.
+    // This is a quadratic equation with the coefficents
+    double a = velocity*velocity;
+    double b = 2*velocity*position_offset;
+    double c = position_offset*position_offset;
+
+    // the solutions are given by,
+    // t_2 = (-b + sqrt(b^2 - 4a*c))/(2a)
+    // t_1 = (-b - sqrt(b^2 - 4a*c))/(2a)
+    // Note, world_line_vector is time like so a < 0, due to the geometry
+    // of the world line it must intersect once with the future and past
+    // light cones so the term in the square root is positive.
+    t_past = (-b + std::sqrt(b*b - 4*a*c))/(2*a);
+    t_future = (-b - std::sqrt(b*b - 4*a*c))/(2*a);
 }
 
 std::vector<float> WorldLine::Resample(double target_period, int output_size) {

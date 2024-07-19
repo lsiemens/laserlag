@@ -10,7 +10,7 @@ since Lorentz transforms are linear.
 
  - `minkowski::Point`: a point in 2+1 minkowski space
  - `minkowski::Vector`: a reletivistic 3 vector in minkowski space
- - `minkowski::Worldline` : a sequence of points and vectors forming a
+ - `minkowski::WorldLine` : a sequence of points and vectors forming a
    timelike path through the tangent manifold
 
 Note: the worldline does not have to include the tangent vectors, but

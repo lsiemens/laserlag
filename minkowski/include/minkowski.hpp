@@ -71,6 +71,7 @@ public:
     Vector GetVelocity(int index);
 
     void GetLightConeIntersection(Point cone_position, Point &intersection_position, Vector &intersection_velocity);
+    void GetIntersectionEstimates(Point cone_position, double &t_past, double &t_future);
     std::vector<float> Resample(double target_period, int max_size);
 private:
 };
