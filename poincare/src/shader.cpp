@@ -68,7 +68,7 @@ GLuint Shader::CompileShader(std::string shader_path, GLenum shader_type){
     if (info_log_length > 0) {
         std::vector<char> ShaderErrorMessage(info_log_length + 1);
         glGetShaderInfoLog(shader_id, info_log_length, NULL, &ShaderErrorMessage[0]);
-        std::cerr << &ShaderErrorMessage[0];
+        std::cerr << shader_path << " " << &ShaderErrorMessage[0];
         throw std::runtime_error("Could not compile shader source code.");
     }
 

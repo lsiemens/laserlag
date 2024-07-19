@@ -15,21 +15,24 @@ class Camera;
 class Camera2D;
 class Camera3D;
 
-
 struct RenderShaders {
     Shader object;
     Shader light_cone;
     Shader world_line;
+    Shader event;
 };
 
 enum class ShaderTypes {
     kObjectShader,
     kLightConeShader,
     kWorldLineShader,
+    kEventShader,
 };
 
 class SpriteManager {
 public:
+    bool show_world_line_intersections;
+
     /// Gets and instance of the SpriteManager singleton.
     /// return Pointer to an instance of SpriteManager.
     static SpriteManager* GetInstance();

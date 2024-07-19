@@ -47,6 +47,9 @@ Shader SpriteManager::GetCurrentShader() {
         case ShaderTypes::kWorldLineShader: {
             return render_shaders.world_line;
         }
+        case ShaderTypes::kEventShader: {
+            return render_shaders.event;
+        }
         default: {
             std::cerr << "Error: Shader type of the current shader not recognized.\n";
             throw std::runtime_error("Could not find the current shader.");
@@ -112,6 +115,29 @@ void SpriteManager::Draw3D(std::shared_ptr<Camera3D> camera) {
         glUniform3fv(render_shaders.world_line.location_indices.world_line_id, 128, &world_line_data[0]);
         object->sprite->DrawSprite();
     }
+
+    if (show_world_line_intersections) {
+        // Draw intersection events
+        SetShader(ShaderTypes::kEventShader);
+        camera->ApplyTransform();
+
+        int num_objects = object_manager->massive_object_list.size();
+        for (int i=0; i < num_objects; i++) {
+            for (int j=0; j < num_objects; j++) {
+                if (i == j) {
+                    continue;
+                }
+
+                minkowski::Point position_i = object_manager->massive_object_list[i]->position;
+                minkowski::Point position_j;
+                minkowski::Vector velocity_j;
+                object_manager->massive_object_list[j]->world_line.GetLightConeIntersection(position_i, position_j, velocity_j);
+
+                glUniform3fv(render_shaders.event.location_indices.position_id, 1, &position_j.ToGLM()[0]);
+                null_sprite->DrawSprite();
+            }
+        }
+    }
 }
 
 void SpriteManager::Draw2D(std::shared_ptr<Camera2D> camera) {
@@ -154,13 +180,20 @@ void SpriteManager::SetShader(ShaderTypes shader_type) {
             current_shader = ShaderTypes::kWorldLineShader;
             break;
         }
+        case ShaderTypes::kEventShader: {
+            render_shaders.event.SetActive();
+            current_shader = ShaderTypes::kEventShader;
+            break;
+        }
         default: {
-            std::cerr << "Error: Shader type not recognized. The current shader will not be changed.\n";
+            std::cerr << "Error: Shader type not recognized.\n";
+            throw std::runtime_error("Could not set shader.");
         }
     }
 }
 
 SpriteManager::SpriteManager() {
+    show_world_line_intersections = false;
 }
 
 } // namespace poincare
