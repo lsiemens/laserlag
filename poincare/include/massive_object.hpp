@@ -12,6 +12,7 @@ class Sprite;
 
 class MassiveObject {
 public:
+    bool active_buffer;
     /// Time since the object's creation in its own refrence frame.
     double proper_time;
 
@@ -37,7 +38,14 @@ public:
     MassiveObject(minkowski::Point position, minkowski::Vector velocity, std::string vector_sprite_path);
 
     void UpdateObject(double dtau);
+
+    /// Determine the number of time steps to take to maintain a space
+    /// like seporation, as estimated by the estimated intersection with
+    /// past and future light cones.
+    void ManageWorldLineBuffer(double dtau, double t_past, double t_future);
 private:
+    /// Number of time steps to take during an update
+    int time_step_num;
 };
 
 } // namespace poincare
