@@ -46,6 +46,12 @@ public:
     /// Convert to glm 3D vector where (t, x, y) maps to (x, y, z) with
     /// t going to z.
     glm::vec3 ToGLM();
+
+    /// Construct a Lorentz transform as a glm 3x3 matrix that will transform
+    /// vectors into the boosted frame. It will be assumed that the refrence
+    /// vector is a time like vector and so the transform will take the
+    /// time like vector (0, 0, 1) and transform it into the refrence vector.
+    glm::mat3 Boost();
 private:
     double components[3];
 };
