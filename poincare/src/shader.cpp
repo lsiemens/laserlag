@@ -27,6 +27,8 @@ Shader::Shader(std::string vertex_path, std::string fragment_path, std::string g
     location_indices.velocity_id = glGetUniformLocation(shader_id, "velocity");
     location_indices.world_line_id = glGetUniformLocation(shader_id, "world_line");
     location_indices.camera_transform_id = glGetUniformLocation(shader_id, "camera_transform");
+    location_indices.camera_position_id = glGetUniformLocation(shader_id, "camera_position");
+    location_indices.camera_boost_id = glGetUniformLocation(shader_id, "camera_boost");
 }
 
 void Shader::SetActive() {

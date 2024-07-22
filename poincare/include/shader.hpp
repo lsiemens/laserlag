@@ -17,6 +17,11 @@ struct LocationIndices {
     int world_line_id = -1;
     /// Camera transform for vertex shader
     int camera_transform_id = -1;
+    /// Camera position for vertex shader
+    int camera_position_id = -1;
+    /// Camera boost for transforming from the system frame to the camera's
+    /// frame in the vertex shader
+    int camera_boost_id = -1;
 };
 
 class Shader {

@@ -11,6 +11,8 @@ void Camera::ApplyTransform() {
 
     glm::mat4 transform_matrix = GetProjectionMatrix()*GetViewMatrix();
     glUniformMatrix4fv(location_indices.camera_transform_id, 1, GL_FALSE, &transform_matrix[0][0]);
+    glUniform3fv(location_indices.camera_position_id, 1, &position.ToGLM()[0]);
+    glUniformMatrix3fv(location_indices.camera_boost_id, 1, GL_FALSE, &velocity.Boost()[0][0]);
 }
 
 } // namespace poincare

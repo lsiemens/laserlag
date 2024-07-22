@@ -148,7 +148,12 @@ void SpriteManager::Draw2D(std::shared_ptr<Camera2D> camera) {
     camera->ApplyTransform();
 
     for (std::shared_ptr<MassiveObject> &object : object_manager->massive_object_list) {
-        glUniform3fv(render_shaders.object.location_indices.position_id, 1, &object->position.ToGLM()[0]);
+        minkowski::Point position;
+        minkowski::Vector velocity;
+        object->world_line.GetLightConeIntersection(camera->position, position, velocity);
+
+        glUniform3fv(render_shaders.object.location_indices.position_id, 1, &position.ToGLM()[0]);
+        glUniform3fv(render_shaders.object.location_indices.velocity_id, 1, &velocity.ToGLM()[0]);
         object->sprite->DrawSprite();
     }
 }

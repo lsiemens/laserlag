@@ -96,7 +96,7 @@ int main() {
     sprite_manager->render_shaders.light_cone = Shader("resources/light_cone.vs", "resources/light_cone.fs", "resources/light_cone.gs");
     sprite_manager->render_shaders.world_line = Shader("resources/world_line.vs", "resources/world_line.fs", "resources/world_line.gs");
     sprite_manager->render_shaders.event = Shader("resources/event.vs", "resources/event.fs", "resources/event.gs");
-    sprite_manager->null_sprite = sprite_manager->GetSprite("resources/light_cone.vsprite");
+    sprite_manager->null_sprite = sprite_manager->GetSprite("resources/null.vsprite");
     sprite_manager->show_world_line_intersections = true;
 
     ObjectManager* object_manager = ObjectManager::GetInstance();
