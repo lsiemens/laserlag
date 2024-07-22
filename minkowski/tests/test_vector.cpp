@@ -41,14 +41,35 @@ TEST(VectorTest, boost) {
 
     glm::vec3 time(0, 0, 1);
     glm::mat3 boost = time_like.Boost();
-    EXPECT_EQ(boost*time, time_like.ToGLM());
+
+    // move comoving vector into boosted frame
+    glm::vec3 computed = boost*time_like.ToGLM();
+    EXPECT_FLOAT_EQ(computed[0], time[0]);
+    EXPECT_FLOAT_EQ(computed[1], time[1]);
+    EXPECT_FLOAT_EQ(computed[2], time[2]);
+
+    // Move local time into bosted frame, expect negative velocity
+    computed = boost*time;
+    EXPECT_FLOAT_EQ(computed[0], -time_like.ToGLM()[0]);
+    EXPECT_FLOAT_EQ(computed[1], -time_like.ToGLM()[1]);
+    EXPECT_FLOAT_EQ(computed[2], time_like.ToGLM()[2]);
 
     // nontrivial vector
     time_like = minkowski::Vector(1, 0.5, 0);
     time_like = (1/std::sqrt(-1*time_like*time_like))*time_like;
 
     boost = time_like.Boost();
-    EXPECT_EQ(boost*time, time_like.ToGLM());
+    // move comoving vector into boosted frame
+    computed = boost*time_like.ToGLM();
+    EXPECT_FLOAT_EQ(computed[0], time[0]);
+    EXPECT_FLOAT_EQ(computed[1], time[1]);
+    EXPECT_FLOAT_EQ(computed[2], time[2]);
+
+    // Move local time into bosted frame, expect negative velocity
+    computed = boost*time;
+    EXPECT_FLOAT_EQ(computed[0], -time_like.ToGLM()[0]);
+    EXPECT_FLOAT_EQ(computed[1], -time_like.ToGLM()[1]);
+    EXPECT_FLOAT_EQ(computed[2], time_like.ToGLM()[2]);
 
     glm::mat3 metric = glm::mat3{{1, 0, 0},
                                  {0, 1, 0},
@@ -67,7 +88,7 @@ TEST(VectorTest, boost) {
     EXPECT_FLOAT_EQ(new_metric[2][1], metric[2][1]);
 
     // manual example
-    time_like = minkowski::Vector(3/2.0, 1/2.0, 1);
+    time_like = minkowski::Vector(3/2.0, -1/2.0, -1);
     glm::vec3 space_like = minkowski::Vector(-1/2.0, 3.0, 1/3.0).ToGLM();
     glm::vec3 result = minkowski::Vector(13/12.0, 187/60.0, 17/30.0).ToGLM();
 

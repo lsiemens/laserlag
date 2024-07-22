@@ -58,9 +58,9 @@ glm::mat3 Vector::Boost() {
     float gamma = velocity.z;
     float gv_x = velocity.x; // gamma*v_x
     float gv_y = velocity.y; // gamma*v_y
-    return glm::mat3{{1 + gv_x*gv_x/(1 + gamma),     gv_y*gv_x/(1 + gamma), gv_x},
-                     {    gv_x*gv_y/(1 + gamma), 1 + gv_y*gv_y/(1 + gamma), gv_y},
-                     {    gv_x,                      gv_y,                  gamma}};
+    return glm::mat3{{1 + gv_x*gv_x/(1 + gamma),     gv_y*gv_x/(1 + gamma), -gv_x},
+                     {    gv_x*gv_y/(1 + gamma), 1 + gv_y*gv_y/(1 + gamma), -gv_y},
+                     {   -gv_x,                     -gv_y,                   gamma}};
 }
 
 } // namespace minkowski
