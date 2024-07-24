@@ -51,7 +51,7 @@ public:
     /// vectors into the boosted frame. It will be assumed that the refrence
     /// vector is a time like vector and so the transform will take the
     /// time like vector (0, 0, 1) and transform it into the refrence vector.
-    glm::mat3 Boost();
+    glm::mat3 Boost(bool inverse=false);
 private:
     double components[3];
 };

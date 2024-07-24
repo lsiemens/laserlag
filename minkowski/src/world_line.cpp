@@ -41,17 +41,17 @@ Vector WorldLine::GetVelocity(int index) {
 
 /// GetLightConeIntersection calculates the intersection point of the
 /// world line with a light cone. This calculation is greatly simplified
-/// by noting that the world line of a massive object is allways contianed
+/// by noting that the world line of a massive object is always contained
 /// within the light cone of every point along the path. Given this constraint
-/// on the world line, if the rappidity of the world line is bounded it
+/// on the world line, if the rapidity of the world line is bounded it
 /// will intersect with a light cone not on the path at exactly two points.
 /// One intersection will be on the past light cone and the other intersection
 /// will be on the future light cone.
 ///
-/// If the active end of the world line object is space like seperated
+/// If the active end of the world line object is space like separated
 /// from the point in question, then the a binary search can be used to
 /// find the point along the world line where the distance to the point
-/// in question is a light like seporation. That is using a binary search
+/// in question is a light like separation. That is using a binary search
 /// to find the indices of the points on the world line where the sign
 /// of the distance changes.
 void WorldLine::GetLightConeIntersection(Point cone_position, Point &intersection_position, Vector &intersection_velocity) {
@@ -60,18 +60,18 @@ void WorldLine::GetLightConeIntersection(Point cone_position, Point &intersectio
     double distance2_near = (cone_position - GetPosition(index_near))*(cone_position - GetPosition(index_near));
     double distance2_far = (cone_position - GetPosition(index_far))*(cone_position - GetPosition(index_far));
 
-    // Check if the newest point is space like seporated. If not, then
+    // Check if the newest point is space like separated. If not, then
     // there is an error.
     if (distance2_near < 0) {
-        std::cerr << "World line and point are not space like seporated.\n";
+        std::cerr << "World line and point are not space like separated.\n";
         throw std::runtime_error("Causality error");
     }
 
     Vector point_far_cone;
     Vector world_line_vector;
 
-    // Check if the oldest point is space like seporated. If so, the world
-    // line should be extended back untill an intersection occurs
+    // Check if the oldest point is space like separated. If so, the world
+    // line should be extended back until an intersection occurs
     if (distance2_far > 0) {
         // Vector from the cone to the far point
         point_far_cone = GetPosition(index_far) - cone_position;
@@ -113,12 +113,12 @@ void WorldLine::GetLightConeIntersection(Point cone_position, Point &intersectio
     // the future light cone at t > 0. In both cases we want the intersection
     // with the lesser value of t.
 
-    // the line intersects with the light cone when the seporation between
-    // the tip of the cone and point_t is a null seporation, so when
+    // the line intersects with the light cone when the separation between
+    // the tip of the cone and point_t is a null separation, so when
     // (point_t - x_0)^2 = 0, where x_0 is the tip of the light cone.
     // Expanding out this equation (point_far - x_0 + t*world_line_vector)^2 = 0
     // gives, world_line_vector^2*t^2 + 2*world_line_vector*(point_far - x_0)*t + (point_far - x_0)^2 = 0.
-    // This is a quadratic equation with the coefficents
+    // This is a quadratic equation with the coefficients
     double a = world_line_vector*world_line_vector;
     double b = 2*world_line_vector*point_far_cone;
     double c = point_far_cone*point_far_cone;
@@ -152,12 +152,12 @@ void WorldLine::GetIntersectionEstimates(Point cone_position, double &t_past, do
     // intersection with the past light cone is at t < 0 and the line would
     // intersect with the future light cone at t > 0.
 
-    // the line intersects with the light cone when the seporation between
-    // the tip of the cone and point_t is a null seporation, so when
+    // the line intersects with the light cone when the separation between
+    // the tip of the cone and point_t is a null separation, so when
     // (point_t - x_0)^2 = 0, where x_0 is the tip of the light cone.
     // Expanding out this equation (position - x_0 + t*velocity)^2 = 0
     // gives, velocity^2*t^2 + 2*velocity*(position - x_0)*t + (position - x_0)^2 = 0.
-    // This is a quadratic equation with the coefficents
+    // This is a quadratic equation with the coefficients
     double a = velocity*velocity;
     double b = 2*velocity*position_offset;
     double c = position_offset*position_offset;
