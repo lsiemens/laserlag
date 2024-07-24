@@ -13,6 +13,9 @@ struct LocationIndices {
     int position_id = -1;
     /// Object velocity for vertex shader
     int velocity_id = -1;
+    /// Object boost for transforming from the object's frame to the system
+    /// frame in the vertex shader
+    int object_inv_boost_id = -1;
     /// World line of a massive object
     int world_line_id = -1;
     /// Camera transform for vertex shader

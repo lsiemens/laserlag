@@ -28,13 +28,7 @@ void Camera2D::UpdateCamera(double dtau) {
 }
 
 glm::mat4 Camera2D::GetViewMatrix() {
-    glm::vec3 z_direction(0, 0, 1);
-    glm::vec3 y_direction(0, 1, 0);
-
-    // project the camera to the horizonta plane at z = 0
-    glm::vec3 position = this->position.ToGLM();
-    position = position - glm::dot(position, z_direction)*z_direction;
-    return glm::lookAt(position, position - z_direction, y_direction);
+    return glm::lookAt(glm::vec3(0), glm::vec3(0, 0, -1), glm::vec3(0, 1, 0));
 }
 
 glm::mat4 Camera2D::GetProjectionMatrix() {

@@ -154,6 +154,7 @@ void SpriteManager::Draw2D(std::shared_ptr<Camera2D> camera) {
 
         glUniform3fv(render_shaders.object.location_indices.position_id, 1, &position.ToGLM()[0]);
         glUniform3fv(render_shaders.object.location_indices.velocity_id, 1, &velocity.ToGLM()[0]);
+        glUniformMatrix3fv(render_shaders.object.location_indices.object_inv_boost_id, 1, GL_FALSE, &velocity.Boost(true)[0][0]);
         object->sprite->DrawSprite();
     }
 }

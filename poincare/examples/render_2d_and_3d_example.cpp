@@ -63,22 +63,28 @@ public:
     }
 };
 
-void ObjectController(std::shared_ptr<MassiveObject> target_object, std::shared_ptr<Window> window) {
+void ObjectController(double dtau, std::shared_ptr<MassiveObject> target_object, std::shared_ptr<Window> window) {
+    // Sudden velocity changes do not work well visualy with Lorentz transforms.
+    // This controller has be switched to controll the acceleration so
+    // the velocity is continuous.
     Continuous axes = window->controls->axes;
 
-    double speed = 0.99;
-    double scale = std::sqrt(axes.x*axes.x + axes.y*axes.y);
+    double acceleration_mag = 0.90;
+    double norm = std::sqrt(axes.x*axes.x + axes.y*axes.y);
 
-    Vector velocity;
-    if (scale > 1e-5) {
-        velocity = Vector(1, speed*axes.y/scale, speed*axes.x/scale);
-        double gamma = 1/std::sqrt((-1)*velocity*velocity);
-        velocity = gamma*velocity;
+    Vector velocity = target_object->velocity;
+    Vector acceleration;
+    if (norm > 1e-5) {
+        acceleration = Vector(0, acceleration_mag*axes.y/norm, acceleration_mag*axes.x/norm);
     } else {
-        velocity = Vector(1, 0, 0);
+        acceleration = Vector(0, 0, 0);
     }
 
-    target_object->velocity = velocity;
+    glm::vec3 acc = velocity.Boost(true)*acceleration.ToGLM();
+
+    acceleration = Vector(acc.z, acc.x, acc.y);
+    velocity = velocity + dtau*acceleration;
+    target_object->velocity = (1/std::sqrt(std::abs(velocity*velocity)))*velocity;
 }
 
 } // namespace
@@ -109,6 +115,39 @@ int main() {
 
     object = std::make_shared<MassiveObject>(Point(0, 10, -10), Vector(1, 0, 0), "resources/basic.vsprite");
     object_manager->massive_object_list.push_back(object);
+
+    // stationary ring
+    double r = 15;
+    int n = 20;
+    for (int i = 0; i < n; i++) {
+        double theta = 2*3.14*i/n;
+        object = std::make_shared<MassiveObject>(Point(0, r*std::sin(theta), r*std::cos(theta)), Vector(1, 0, 0), "resources/basic.vsprite");
+        object_manager->massive_object_list.push_back(object);
+    }
+
+    r = 20;
+    n = 20;
+    for (int i = 0; i < n; i++) {
+        double theta = 2*3.14*i/n;
+        object = std::make_shared<MassiveObject>(Point(0, r*std::sin(theta), r*std::cos(theta)), Vector(1, 0, 0), "resources/basic.vsprite");
+        object_manager->massive_object_list.push_back(object);
+    }
+
+    r = 25;
+    n = 20;
+    for (int i = 0; i < n; i++) {
+        double theta = 2*3.14*i/n;
+        object = std::make_shared<MassiveObject>(Point(0, r*std::sin(theta), r*std::cos(theta)), Vector(1, 0, 0), "resources/basic.vsprite");
+        object_manager->massive_object_list.push_back(object);
+    }
+
+    r = 30;
+    n = 20;
+    for (int i = 0; i < n; i++) {
+        double theta = 2*3.14*i/n;
+        object = std::make_shared<MassiveObject>(Point(0, r*std::sin(theta), r*std::cos(theta)), Vector(1, 0, 0), "resources/basic.vsprite");
+        object_manager->massive_object_list.push_back(object);
+    }
 
     // Camera setup
     std::shared_ptr<Camera3D> camera = std::dynamic_pointer_cast<Camera3D>(window_manager->window_list[1]->camera);
@@ -143,7 +182,7 @@ int main() {
         std::shared_ptr<MassiveObject> object = object_manager->massive_object_list[2];
         object->velocity = gamma*Vector(1, speed*std::cos(rate*object->proper_time), speed*std::sin(rate*object->proper_time));
 
-        ObjectController(object_manager->massive_object_list[0], window_manager->window_list[0]);
+        ObjectController(dtau, object_manager->massive_object_list[0], window_manager->window_list[0]);
         camera_controls2.ControlResponse(dtau, window_manager->window_list[1]);
         object_manager->UpdateObjects(dtau);
 
