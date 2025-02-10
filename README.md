@@ -17,6 +17,13 @@ Any [documentation](theory/README.md) on the general theory behind this project 
 maintained in `theory/` while theory and discussion of specific implementation
 should be in the respective directories
 
+# Environment setup
+Install cmake, make and a compiler for building the software, also install the
+required C++ libraries by running the following command.
+
+`sudo apt install build-essential cmake make`
+`sudo apt install libglm-dev libgtest-dev libglfw3 libglfw3-dev libglew-dev`
+
 # Build
 This project uses `cmake` to setup build scripts. To keep the directories
 clean I would build in a separate directory with the following commands.
