@@ -35,5 +35,6 @@
 *.app
 
 # Directories
-Documentation
+doc/html
+doc/latex
 build
